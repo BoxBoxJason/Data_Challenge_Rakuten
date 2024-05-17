@@ -28,8 +28,10 @@ Note:
 """
 
 from os.path import join, exists
+from os import environ
 import logging
 from pandas import read_csv
+from sklearn.feature_extraction.text import TfidfVectorizer
 from utils.tokenize import tokenizeDataset
 
 def checkDatasetFileExists(data_directory_path, file_name, url):
@@ -102,7 +104,8 @@ def prepareDataset(dataset):
     logging.debug('Removing unnecessary columns from dataset')
     columns_to_drop = [col for col in ['id', 'description', 'imageid'] if col in dataset.columns]
     dataset.drop(columns_to_drop, axis=1, inplace=True)
-    tokenizeDataset(dataset)
+    if 'designation' in dataset.columns:
+        tokenizeDataset(dataset)
 
 
 def prepareDatasets(data_directory_path):
@@ -117,8 +120,38 @@ def prepareDatasets(data_directory_path):
     """
     product_data_train, product_data_test, product_types_codes = openDatasets(data_directory_path)
 
-    prepareDataset(product_data_train)
-    prepareDataset(product_data_test)
+    processed_data_train_path = join(environ['PROJECT_PROCESSED_DATA_DIR'],'X_train_processed.csv')
+    if exists(processed_data_train_path):
+        logging.info(f'Reading processed training data from file {processed_data_train_path}')
+        product_data_train = read_csv(processed_data_train_path)
+    else:
+        logging.info(f'Preparing training data and saving to file {processed_data_train_path}')
+        prepareDataset(product_data_train)
+        product_data_train.to_csv(processed_data_train_path, index=False)
+
+    processed_data_test_path = join(environ['PROJECT_PROCESSED_DATA_DIR'],'X_test_processed.csv')
+    if exists(processed_data_test_path):
+        logging.info(f'Reading processed test data from file {processed_data_test_path}')
+        product_data_test = read_csv(processed_data_test_path)
+    else:
+        logging.info(f'Preparing test data and saving to file {processed_data_test_path}')
+        prepareDataset(product_data_test)
+        product_data_test.to_csv(processed_data_test_path, index=False)
+
     prepareDataset(product_types_codes)
 
-    return product_data_train, product_data_test, product_types_codes
+    return createTfIdfMatrixFromDataset(product_data_train), createTfIdfMatrixFromDataset(product_data_test), product_types_codes
+
+
+def createTfIdfMatrixFromDataset(dataset):
+    """
+    @brief Creates a TF-IDF matrix from the dataset.
+
+    This function creates a TF-IDF matrix from the 'designation' column of the dataset.
+
+    @param dataset The pandas DataFrame from which the TF-IDF matrix is to be created.
+    @return The TF-IDF matrix created from the 'designation' column of the dataset.
+    """
+    tfidf = TfidfVectorizer()
+    tfidf_matrix = tfidf.fit_transform(dataset)
+    return tfidf_matrix

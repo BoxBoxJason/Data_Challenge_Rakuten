@@ -48,7 +48,7 @@ def tokenize(string, is_normalized=False):
     if not is_normalized:
         string = normalizeAccent(string.lower())
     spacy_tokens = __SPACY_NLP(string)
-    return [token.orth_ for token in spacy_tokens if not token.is_punct if not token.is_stop]
+    return ' '.join([token.orth_ for token in spacy_tokens if not token.is_punct if not token.is_stop])
 
 
 def tokenizeDataset(dataset):
