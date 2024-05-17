@@ -1,5 +1,5 @@
 """
-@file prepare.py
+@file src/data/prepare.py
 @brief This module contains functions for preparing datasets for further analysis.
 
 Functions:
@@ -28,7 +28,7 @@ Note:
 """
 
 from os.path import join, exists
-from os import makedirs
+import logging
 from pandas import read_csv
 
 
@@ -44,8 +44,10 @@ def checkDatasetFileExists(data_directory_path, file_name, url):
     @param url The URL of the dataset file to be downloaded.
     @return None
     """
+    logging.debug(f"Checking if {file_name} exists in the data directory")
     if not exists(join(data_directory_path, file_name)):
         raise FileNotFoundError(f"File {file_name} not found in the data directory. Please download it from {url} and place it at {data_directory_path}")
+    logging.info(f"{file_name} found in the data directory.")
 
 
 def openDatasets(data_directory_path):
@@ -58,7 +60,7 @@ def openDatasets(data_directory_path):
     @param data_directory_path The path to the data directory.
     @return Three pandas DataFrames corresponding to the training data, test data, and product types codes.
     """
-    makedirs(data_directory_path, exist_ok=True)
+    logging.debug(f"Opening datasets from {data_directory_path}")
     datasets_paths = {
         'X_train_update.csv': 'https://challengedata.ens.fr/participants/challenges/35/download/x-train',
         'X_test_update.csv': 'https://challengedata.ens.fr/participants/challenges/35/download/x-test',
@@ -97,6 +99,7 @@ def prepareDataset(dataset):
     @param dataset The pandas DataFrame to be prepared.
     @return None
     """
+    logging.debug('Removing unnecessary columns from dataset')
     columns_to_drop = [col for col in ['id', 'description', 'imageid'] if col in dataset.columns]
     dataset.drop(columns_to_drop, axis=1, inplace=True)
 
