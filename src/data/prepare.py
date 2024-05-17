@@ -30,7 +30,7 @@ Note:
 from os.path import join, exists
 import logging
 from pandas import read_csv
-
+from utils.tokenize import tokenizeDataset
 
 def checkDatasetFileExists(data_directory_path, file_name, url):
     """
@@ -94,7 +94,7 @@ def prepareDataset(dataset):
     """
     @brief Drops the columns 'id', 'description', and 'imageid' from the dataset (if they exist).
 
-    The changes are made in-place.
+    The changes are made in-place. (MEANING THE DROPPED COLUMNS ARE LOST FOREVER)
 
     @param dataset The pandas DataFrame to be prepared.
     @return None
@@ -102,6 +102,7 @@ def prepareDataset(dataset):
     logging.debug('Removing unnecessary columns from dataset')
     columns_to_drop = [col for col in ['id', 'description', 'imageid'] if col in dataset.columns]
     dataset.drop(columns_to_drop, axis=1, inplace=True)
+    tokenizeDataset(dataset)
 
 
 def prepareDatasets(data_directory_path):

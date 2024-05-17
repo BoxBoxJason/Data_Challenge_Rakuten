@@ -55,12 +55,11 @@ def tokenizeDataset(dataset):
     """
     @brief Tokenizes a dataset.
 
-    This function tokenizes a pandas dataset by tokenizing each string in the dataset.
+    This function tokenizes the designation column of a pandas dataset by tokenizing each string in the dataset.
     Warning, changes the dataset in place, meaning that the original dataset is modified.
 
     @param dataset The dataset to be tokenized.
     @return None
     """
     logging.debug('Tokenizing dataset (may take a while depending on the dataset size)')
-    for column in dataset.columns:
-        dataset[column] = dataset[column].apply(tokenize)
+    dataset['designation'] = dataset['designation'].apply(tokenize)
