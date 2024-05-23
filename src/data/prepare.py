@@ -153,5 +153,5 @@ def createTfIdfMatrixFromDataset(dataset):
     @return The TF-IDF matrix created from the 'designation' column of the dataset.
     """
     tfidf = TfidfVectorizer()
-    tfidf_matrix = tfidf.fit_transform(dataset)
+    tfidf_matrix = tfidf.fit_transform(dataset['designation'].fillna(''))
     return tfidf_matrix

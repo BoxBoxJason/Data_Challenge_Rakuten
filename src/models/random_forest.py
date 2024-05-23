@@ -2,7 +2,7 @@ import logging
 from os.path import join
 from os import getenv, makedirs
 import numpy
-from sklearn.ensemble import RandomForestRegressor
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import make_scorer, accuracy_score
 from utils.json import saveJson
@@ -11,11 +11,13 @@ from utils.json import saveJson
 __RANDOM_FOREST_RESULTS_PATH = join(getenv('PROJECT_RESULTS_DIR'), 'random_forest_results')
 # Best parameters for Random Forest Regressor path
 __RANDOM_FOREST_BEST_PARAMS_PATH = join(__RANDOM_FOREST_RESULTS_PATH, 'best_params.json')
+# All tests results for Random Forest Regressor path
+__RANDOM_FOREST_ALL_TESTS_RESULTS_PATH = join(__RANDOM_FOREST_RESULTS_PATH, 'all_tests_results.json')
 
 makedirs(__RANDOM_FOREST_RESULTS_PATH, exist_ok=True)
 
 
-def preProcessDataset(dataset): # TODO
+def preProcessDataset(dataset):
     """
     @brief Preprocesses the dataset.
 
@@ -39,15 +41,18 @@ def optimizeRandomForestRegressorParameters(X_train, y_train):
     @return The trained Random Forest Regressor model.
     """
     logging.debug("Training Random Forest Regressor model")
-    rf = RandomForestRegressor()
+    rf = RandomForestClassifier()
     param_grid = {
-        'n_estimators': [100, 200, 300],
-        'max_depth': [10, 20, 30],
-        'min_samples_split': [2, 5, 10],
-        'min_samples_leaf': [1, 2, 4],
+        'n_estimators': [100, 200, 300,400,500],
+        'max_depth': [None,10, 20, 30],
+        'min_samples_split': [2, 5, 10,15],
+        'min_samples_leaf': [1, 2, 4,8],
         'max_features': ['auto', 'sqrt', 'log2']
     }
-    grid_search = GridSearchCV(estimator=rf, param_grid=param_grid, cv=5, n_jobs=-1, verbose=2, scoring=createRandomForestRegressorScorer())
+
+    print(f'y_train shape: {y_train.shape}')
+
+    grid_search = GridSearchCV(estimator=rf, param_grid=param_grid, cv=5, n_jobs=-1, verbose=2, scoring='f1_weighted')
 
     processed_X_train = preProcessDataset(X_train)
     grid_search.fit(processed_X_train, y_train)
@@ -58,29 +63,7 @@ def optimizeRandomForestRegressorParameters(X_train, y_train):
     logging.info(f"Saving best parameters at {__RANDOM_FOREST_BEST_PARAMS_PATH}")
     saveJson(grid_search.best_params_, __RANDOM_FOREST_BEST_PARAMS_PATH)
 
+    logging.info(f"Saving all tests results at {__RANDOM_FOREST_ALL_TESTS_RESULTS_PATH}")
+    saveJson(grid_search.cv_results_, __RANDOM_FOREST_ALL_TESTS_RESULTS_PATH)
+
     return grid_search.best_estimator_
-
-
-def createRandomForestRegressorScorer():
-    """
-    @brief Creates a scorer for Random Forest Regressor.
-
-    This function creates a scorer for Random Forest Regressor.
-
-    @return The scorer for Random Forest Regressor.
-    """
-    def accuracy_scorer(y_true, y_pred):
-        """
-        @brief Calculates the accuracy score for Random Forest Regressor.
-
-        This function calculates the accuracy score for Random Forest Regressor.
-        The accuracy score is calculated by rounding the predicted values to the nearest integer.
-
-        @param y_true The true target values.
-        @param y_pred The predicted target values.
-        @return The accuracy score.
-        """
-        y_pred_rounded = numpy.round(y_pred).astype(int)
-        return accuracy_score(y_true, y_pred_rounded)
-
-    return make_scorer(accuracy_scorer, greater_is_better=True)
