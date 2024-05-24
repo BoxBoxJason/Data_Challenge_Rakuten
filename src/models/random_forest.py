@@ -3,14 +3,14 @@ from os.path import join
 from os import getenv, makedirs
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import GridSearchCV
-from pandas import DataFrame
 from utils.json import saveJson
+from models.models import predictTestDataset, trainClassifier
 
-# Random Forest Regressor results path
+# Random Forest Classifier results path
 __RANDOM_FOREST_RESULTS_PATH = join(getenv('PROJECT_RESULTS_DIR'), 'random_forest_results')
-# Best parameters for Random Forest Regressor path
+# Best parameters for Random Forest Classifier path
 __RANDOM_FOREST_BEST_PARAMS_PATH = join(__RANDOM_FOREST_RESULTS_PATH, 'best_params.json')
-# All tests results for Random Forest Regressor path
+# All tests results for Random Forest Classifier path
 __RANDOM_FOREST_ALL_TESTS_RESULTS_PATH = join(__RANDOM_FOREST_RESULTS_PATH, 'all_tests_results.json')
 # Random forest predicted csv path
 __RANDOM_FOREST_PREDICTED_CSV_PATH = join(__RANDOM_FOREST_RESULTS_PATH, 'predicted_Y_test.csv')
@@ -26,22 +26,22 @@ def preProcessDataset(dataset):
     @param dataset The dataset to be preprocessed.
     @return The preprocessed dataset.
     """
-    logging.debug("Preprocessing dataset for Random Forest Regressor")
+    logging.debug("Preprocessing dataset for Random Forest Classifier")
     return dataset
 
 
-def optimizeRandomForestRegressorParameters(X_train, y_train):
+def optimizeRandomForestClassifierParameters(X_train, y_train):
     """
-    @brief Trains a Random Forest Regressor model on the training data.
+    @brief Trains a Random Forest Classifier model on the training data.
 
-    This function trains a Random Forest Regressor model on the training data.
+    This function trains a Random Forest Classifier model on the training data.
     The model is trained using GridSearchCV to find the best hyperparameters.
 
     @param X_train The training data.
     @param y_train The target variable.
-    @return The trained Random Forest Regressor model.
+    @return The trained Random Forest Classifier model.
     """
-    logging.debug("Training Random Forest Regressor model")
+    logging.debug("Training Random Forest Classifier model")
     rf = RandomForestClassifier()
     param_grid = {
         'n_estimators': [100, 200, 300,400,500],
@@ -54,8 +54,8 @@ def optimizeRandomForestRegressorParameters(X_train, y_train):
     processed_X_train = preProcessDataset(X_train)
     grid_search.fit(processed_X_train, y_train)
 
-    logging.info(f"Best parameters for Random Forest Regressor: {grid_search.best_params_}")
-    logging.info(f"Best score for Random Forest Regressor: {grid_search.best_score_}")
+    logging.info(f"Best parameters for Random Forest Classifier: {grid_search.best_params_}")
+    logging.info(f"Best score for Random Forest Classifier: {grid_search.best_score_}")
 
     logging.info(f"Saving best parameters at {__RANDOM_FOREST_BEST_PARAMS_PATH}")
     saveJson(grid_search.best_params_, __RANDOM_FOREST_BEST_PARAMS_PATH)
@@ -66,41 +66,38 @@ def optimizeRandomForestRegressorParameters(X_train, y_train):
     return grid_search.best_estimator_
 
 
-def trainRandomForestRegressor(X_train, y_train, best_params=None, n_estimators=100, max_depth=None, max_features='auto'):
+def trainRandomForestClassifier(X_train, y_train, model_params=None):
     """
-    @brief Trains a Random Forest Regressor model on the training data.
+    @brief Trains a Random Forest Classifier model on the training data.
 
-    This function trains a Random Forest Regressor model on the training data.
+    This function trains a Random Forest Classifier model on the training data.
     The model is trained using the best hyperparameters found by optimizeRandomForestRegressorParameters().
 
     @param X_train The training data.
     @param y_train The target variable.
-    @return The trained Random Forest Regressor model.
+    @return The trained Random Forest Classifier model.
     """
-    logging.debug("Training Random Forest Regressor model")
-    if best_params is not None:
-        rf = RandomForestClassifier(**best_params, n_jobs=-1, verbose=2, random_state=42)
-    else:
-        rf = RandomForestClassifier(n_estimators=n_estimators, max_depth=max_depth, max_features=max_features,
-                                    n_jobs=-1, verbose=2, random_state=42)
+    logging.debug("Training Random Forest Classifier model")
     processed_X_train = preProcessDataset(X_train)
-    rf.fit(processed_X_train, y_train)
-    return rf
+    if model_params is None:
+        model_params = {}
+    trained_rf_model = trainClassifier(RandomForestClassifier, model_params, processed_X_train, y_train)
+    return trained_rf_model
 
 
-def predictTestDataset(rf, X_test, save_results=False):
+def predictRandomForestClassifier(rf, X_test, save_results=False):
     """
-    @brief Predicts the target variable using a trained Random Forest Regressor model.
+    @brief Predicts the target variable using a trained Random Forest Classifier model.
 
-    This function predicts the target variable using a trained Random Forest Regressor model.
+    This function predicts the target variable using a trained Random Forest Classifier model.
 
-    @param rf The trained Random Forest Regressor model.
+    @param rf The trained Random Forest Classifier model.
     @param X_test The test data.
     @return The predicted target variable.
     """
+    logging.debug("Predicting test dataset for Random Forest Classifier")
     processed_X_test = preProcessDataset(X_test)
-    prediction = rf.predict(processed_X_test)
     if save_results:
-        prediction_df = DataFrame(prediction)
-        prediction_df.to_csv(__RANDOM_FOREST_PREDICTED_CSV_PATH, index=True)
+        logging.info(f"Saving predicted results at {__RANDOM_FOREST_PREDICTED_CSV_PATH}")
+    prediction = predictTestDataset(rf, processed_X_test, __RANDOM_FOREST_PREDICTED_CSV_PATH if save_results else None)
     return prediction

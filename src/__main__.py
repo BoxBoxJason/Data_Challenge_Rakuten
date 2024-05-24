@@ -9,11 +9,15 @@ os.environ['PROJECT_RESULTS_DIR'] = os.path.join(os.environ['PROJECT_ROOT_DIR'],
 
 from utils.logger import setupCustomLogger
 from data.prepare import prepareDatasets
-from models.random_forest import optimizeRandomForestRegressorParameters
+from models.random_forest import optimizeRandomForestClassifierParameters
+from models.k_nearest_neighbors import optimizeKNeighborsClassifierParameters
 
 setupCustomLogger('DEBUG')
 X_train, X_test, y_train = prepareDatasets(os.environ['PROJECT_RAW_DATA_DIR'])
 
 # Check if optimize random forest in __main__.py arguments
 if 'optimize_random_forest' in sys.argv:
-    best_params = optimizeRandomForestRegressorParameters(X_train, y_train)
+    best_params = optimizeRandomForestClassifierParameters(X_train, y_train)
+
+if 'optimize_k_nearest_neighbors' in sys.argv:
+    best_params = optimizeKNeighborsClassifierParameters(X_train, y_train)
