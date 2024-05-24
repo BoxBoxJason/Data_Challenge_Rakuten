@@ -3,7 +3,7 @@ from os.path import join
 from os import getenv, makedirs
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import GridSearchCV
-from utils.json import saveJson
+from utils.json import saveJson, convertToSerializable
 from models.models import predictTestDataset, trainClassifier
 
 # K Neighbors Classifier results path
@@ -62,7 +62,7 @@ def optimizeKNeighborsClassifierParameters(X_train, y_train):
     saveJson(grid_search.best_params_, __K_NEIGHBORS_BEST_PARAMS_PATH)
 
     logging.info(f"Saving all tests results at {__K_NEIGHBORS_ALL_TESTS_RESULTS_PATH}")
-    saveJson(grid_search.cv_results_, __K_NEIGHBORS_ALL_TESTS_RESULTS_PATH)
+    saveJson(convertToSerializable(grid_search.cv_results_), __K_NEIGHBORS_ALL_TESTS_RESULTS_PATH)
 
     return grid_search.best_estimator_
 

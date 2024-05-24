@@ -3,7 +3,7 @@ from os.path import join
 from os import getenv, makedirs
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import GridSearchCV
-from utils.json import saveJson
+from utils.json import saveJson, convertToSerializable
 from models.models import predictTestDataset, trainClassifier
 
 # Random Forest Classifier results path
@@ -61,7 +61,7 @@ def optimizeRandomForestClassifierParameters(X_train, y_train):
     saveJson(grid_search.best_params_, __RANDOM_FOREST_BEST_PARAMS_PATH)
 
     logging.info(f"Saving all tests results at {__RANDOM_FOREST_ALL_TESTS_RESULTS_PATH}")
-    saveJson(grid_search.cv_results_, __RANDOM_FOREST_ALL_TESTS_RESULTS_PATH)
+    saveJson(convertToSerializable(grid_search.cv_results_), __RANDOM_FOREST_ALL_TESTS_RESULTS_PATH)
 
     return grid_search.best_estimator_
 

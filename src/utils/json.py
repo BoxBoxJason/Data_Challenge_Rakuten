@@ -1,4 +1,5 @@
 from json import load, dump
+from numpy import ndarray
 
 def loadJson(file_path):
     """
@@ -26,3 +27,23 @@ def saveJson(data, file_path):
     """
     with open(file_path, 'w', encoding='utf-8') as file:
         dump(data, file, indent=4)
+
+
+def convertToSerializable(obj):
+    """
+    Convert a dictionary with non-serializable numpy arrays to a serializable format.
+
+    Args:
+        obj (dict): The dictionary to convert.
+
+    Returns:
+        dict: The converted dictionary with all non-serializable types converted to serializable ones.
+    """
+    if isinstance(obj, ndarray):
+        return obj.tolist()
+    elif isinstance(obj, dict):
+        return {k: convertToSerializable(v) for k, v in obj.items()}
+    elif isinstance(obj, list):
+        return [convertToSerializable(i) for i in obj]
+    else:
+        return obj

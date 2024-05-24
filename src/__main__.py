@@ -11,6 +11,7 @@ from utils.logger import setupCustomLogger
 from data.prepare import prepareDatasets
 from models.random_forest import optimizeRandomForestClassifierParameters
 from models.k_nearest_neighbors import optimizeKNeighborsClassifierParameters
+from models.bayesian import optimizeComplementNaiveBayesClassifierParameters, optimizeMultinomialNaiveBayesClassifierParameters, optimizeNaiveBayesClassifierParameters
 
 setupCustomLogger('DEBUG')
 X_train, X_test, y_train = prepareDatasets(os.environ['PROJECT_RAW_DATA_DIR'])
@@ -21,3 +22,12 @@ if 'optimize_random_forest' in sys.argv:
 
 if 'optimize_k_nearest_neighbors' in sys.argv:
     best_params = optimizeKNeighborsClassifierParameters(X_train, y_train)
+
+if 'optimize_naive_bayes_gaussian' in sys.argv:
+    best_params = optimizeNaiveBayesClassifierParameters(X_train, y_train)
+
+if 'optimize_naive_bayes_multinomial' in sys.argv:
+    best_params = optimizeMultinomialNaiveBayesClassifierParameters(X_train, y_train)
+
+if 'optimize_naive_bayes_complement' in sys.argv:
+    best_params = optimizeComplementNaiveBayesClassifierParameters(X_train, y_train)

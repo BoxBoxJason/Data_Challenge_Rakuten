@@ -63,3 +63,90 @@ jobs:
         with:
           name: results_directory_k_nearest_neighbors
           path: ./results/k_nearest_neighbors_results
+
+  optimize-naive-bayes-gaussian:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4320
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.12
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          python -m spacy download fr_core_news_sm
+
+      - name: Run Python script
+        run: |
+          python ./src/__main__.py optimize_naive_bayes_gaussian
+
+      - name: Upload result
+        uses: actions/upload-artifact@v2
+        with:
+          name: results_directory_bayesian_naive_gaussian
+          path: ./results/naive_bayes_results/gaussian
+
+  optimize-naive-bayes-multinomial:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4320
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.12
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          python -m spacy download fr_core_news_sm
+
+      - name: Run Python script
+        run: |
+          python ./src/__main__.py optimize_naive_bayes_multinomial
+
+      - name: Upload result
+        uses: actions/upload-artifact@v2
+        with:
+          name: results_directory_bayesian_naive_multinomial
+          path: ./results/naive_bayes_results/multinomial
+
+  optimize-naive-bayes-complement:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4320
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.12
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          python -m spacy download fr_core_news_sm
+
+      - name: Run Python script
+        run: |
+          python ./src/__main__.py optimize_naive_bayes_complement
+
+      - name: Upload result
+        uses: actions/upload-artifact@v2
+        with:
+          name: results_directory_bayesian_naive_complement
+          path: ./results/naive_bayes_results/complement
