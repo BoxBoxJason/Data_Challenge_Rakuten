@@ -140,18 +140,10 @@ def prepareDatasets(data_directory_path):
 
     prepareDataset(product_types_codes)
 
-    return createTfIdfMatrixFromDataset(product_data_train), createTfIdfMatrixFromDataset(product_data_test), product_types_codes
-
-
-def createTfIdfMatrixFromDataset(dataset):
-    """
-    @brief Creates a TF-IDF matrix from the dataset.
-
-    This function creates a TF-IDF matrix from the 'designation' column of the dataset.
-
-    @param dataset The pandas DataFrame from which the TF-IDF matrix is to be created.
-    @return The TF-IDF matrix created from the 'designation' column of the dataset.
-    """
     tfidf = TfidfVectorizer()
-    tfidf_matrix = tfidf.fit_transform(dataset['designation'].fillna(''))
-    return tfidf_matrix
+    tfidf.fit(product_data_train['designation'].fillna(''))
+
+    X_train_tfidf = tfidf.transform(product_data_train['designation'].fillna(''))
+    X_test_tfidf = tfidf.transform(product_data_test['designation'].fillna(''))
+
+    return X_train_tfidf, X_test_tfidf, product_types_codes['prdtypecode'].values.ravel()
