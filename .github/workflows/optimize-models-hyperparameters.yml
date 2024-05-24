@@ -150,3 +150,177 @@ jobs:
         with:
           name: results_directory_bayesian_naive_complement
           path: ./results/naive_bayes_results/complement
+
+  optimize-naive-bayes-bernoulli:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4320
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.12
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          python -m spacy download fr_core_news_sm
+
+      - name: Run Python script
+        run: |
+          python ./src/__main__.py optimize_naive_bayes_bernoulli
+
+      - name: Upload result
+        uses: actions/upload-artifact@v2
+        with:
+          name: results_directory_bayesian_naive_bernoulli
+          path: ./results/naive_bayes_results/bernoulli
+
+  optimize-gradient-boosting:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4320
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.12
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          python -m spacy download fr_core_news_sm
+
+      - name: Run Python script
+        run: |
+          python ./src/__main__.py optimize_gradient_boosting
+
+      - name: Upload result
+        uses: actions/upload-artifact@v2
+        with:
+          name: results_directory_gradient_boosting
+          path: ./results/gradient_boosting_results
+
+  optimize-hist-gradient-boosting:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4320
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.12
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          python -m spacy download fr_core_news_sm
+
+      - name: Run Python script
+        run: |
+          python ./src/__main__.py optimize_hist_gradient_boosting
+
+      - name: Upload result
+        uses: actions/upload-artifact@v2
+        with:
+          name: results_directory_hist_gradient_boosting
+          path: ./results/hist_gradient_boosting_results
+
+  optimize-svc:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4320
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.12
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          python -m spacy download fr_core_news_sm
+
+      - name: Run Python script
+        run: |
+          python ./src/__main__.py optimize_svc
+
+      - name: Upload result
+        uses: actions/upload-artifact@v2
+        with:
+          name: results_directory_svc
+          path: ./results/svm_results/svc
+
+  optimize-nu-svc:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4320
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.12
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          python -m spacy download fr_core_news_sm
+
+      - name: Run Python script
+        run: |
+          python ./src/__main__.py optimize_nu_svc
+
+      - name: Upload result
+        uses: actions/upload-artifact@v2
+        with:
+          name: results_directory_nu_svc
+          path: ./results/svm_results/nu_svc
+
+  optimize-linear-svc:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4320
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.12
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          python -m spacy download fr_core_news_sm
+
+      - name: Run Python script
+        run: |
+          python ./src/__main__.py optimize_linear_svc
+
+      - name: Upload result
+        uses: actions/upload-artifact@v2
+        with:
+          name: results_directory_linear_svc
+          path: ./results/svm_results/linear_svc

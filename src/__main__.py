@@ -12,7 +12,8 @@ from data.prepare import prepareDatasets
 from models.random_forest import optimizeRandomForestClassifierParameters
 from models.gradient_boosting import optimizeGradientBoostingClassifierParameters, optimizeHistGradientBoostingClassifierParameters
 from models.k_nearest_neighbors import optimizeKNeighborsClassifierParameters
-from models.bayesian import optimizeComplementNaiveBayesClassifierParameters, optimizeMultinomialNaiveBayesClassifierParameters, optimizeNaiveBayesClassifierParameters
+from models.bayesian import optimizeComplementNaiveBayesClassifierParameters, optimizeMultinomialNaiveBayesClassifierParameters, optimizeNaiveBayesGaussianClassifierParameters, optimizeBernoulliNaiveBayesClassifierParameters
+from models.support_vector_machines import optimizeSVCParameters, optimizeLinearSVCParameters, optimizeNuSVCParameters
 
 setupCustomLogger('DEBUG')
 X_train, X_test, y_train = prepareDatasets(os.environ['PROJECT_RAW_DATA_DIR'])
@@ -31,10 +32,22 @@ if 'optimize_k_nearest_neighbors' in sys.argv:
     best_params = optimizeKNeighborsClassifierParameters(X_train, y_train)
 
 if 'optimize_naive_bayes_gaussian' in sys.argv:
-    best_params = optimizeNaiveBayesClassifierParameters(X_train, y_train)
+    best_params = optimizeNaiveBayesGaussianClassifierParameters(X_train, y_train)
 
 if 'optimize_naive_bayes_multinomial' in sys.argv:
     best_params = optimizeMultinomialNaiveBayesClassifierParameters(X_train, y_train)
 
 if 'optimize_naive_bayes_complement' in sys.argv:
     best_params = optimizeComplementNaiveBayesClassifierParameters(X_train, y_train)
+
+if 'optimize_naive_bayes_bernouilli' in sys.argv:
+    best_params = optimizeBernoulliNaiveBayesClassifierParameters(X_train, y_train)
+
+if 'optimize_svc' in sys.argv:
+    best_params = optimizeSVCParameters(X_train, y_train)
+
+if 'optimize_linear_svc' in sys.argv:
+    best_params = optimizeLinearSVCParameters(X_train, y_train)
+
+if 'optimize_nu_svc' in sys.argv:
+    best_params = optimizeNuSVCParameters(X_train, y_train)
