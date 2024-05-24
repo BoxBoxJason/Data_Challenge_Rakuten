@@ -2,16 +2,10 @@ import logging
 from os.path import join
 from os import getenv, makedirs
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.model_selection import GridSearchCV
-from utils.json import saveJson, convertToSerializable
-from models.models import predictTestDataset, trainClassifier
+from models.models import predictTestDataset, trainClassifier, optimizeModelParameters
 
 # K Neighbors Classifier results path
 __K_NEIGHBORS_RESULTS_PATH = join(getenv('PROJECT_RESULTS_DIR'), 'k_nearest_neighbors_results')
-# Best parameters for K Neighbors Classifier path
-__K_NEIGHBORS_BEST_PARAMS_PATH = join(__K_NEIGHBORS_RESULTS_PATH, 'best_params.json')
-# All tests results for K Neighbors Classifier path
-__K_NEIGHBORS_ALL_TESTS_RESULTS_PATH = join(__K_NEIGHBORS_RESULTS_PATH, 'all_tests_results.json')
 # K Neighbors predicted csv path
 __K_NEIGHBORS_PREDICTED_CSV_PATH = join(__K_NEIGHBORS_RESULTS_PATH, 'predicted_Y_test.csv')
 
@@ -40,8 +34,6 @@ def optimizeKNeighborsClassifierParameters(X_train, y_train):
     @param y_train The target variable.
     @return The trained K Neighbors Classifier model.
     """
-    logging.debug("Training K Neighbors Classifier model")
-    knb = KNeighborsClassifier()
     param_grid = {
         'n_neighbors': [5, 10, 15],
         'weights': ['uniform', 'distance'],
@@ -50,24 +42,12 @@ def optimizeKNeighborsClassifierParameters(X_train, y_train):
         'p': [1, 2]
     }
 
-    grid_search = GridSearchCV(estimator=knb, param_grid=param_grid, cv=5, n_jobs=-1, verbose=2, scoring='f1_weighted')
-
     processed_X_train = preProcessDataset(X_train)
-    grid_search.fit(processed_X_train, y_train)
 
-    logging.info(f"Best parameters for K Neighbors Classifier: {grid_search.best_params_}")
-    logging.info(f"Best score for K Neighbors Classifier: {grid_search.best_score_}")
-
-    logging.info(f"Saving best parameters at {__K_NEIGHBORS_BEST_PARAMS_PATH}")
-    saveJson(grid_search.best_params_, __K_NEIGHBORS_BEST_PARAMS_PATH)
-
-    logging.info(f"Saving all tests results at {__K_NEIGHBORS_ALL_TESTS_RESULTS_PATH}")
-    saveJson(convertToSerializable(grid_search.cv_results_), __K_NEIGHBORS_ALL_TESTS_RESULTS_PATH)
-
-    return grid_search.best_estimator_
+    return optimizeModelParameters(KNeighborsClassifier,'K-Nearest Neighbors Classifier', param_grid,__K_NEIGHBORS_RESULTS_PATH,processed_X_train,y_train)
 
 
-def trainKNeighborsClassifier(X_train, y_train, model_params=None):
+def trainKNeighborsClassifier(X_train, y_train, model_params={}):
     """
     @brief Trains a K Neighbors Classifier model on the training data.
 
@@ -79,8 +59,6 @@ def trainKNeighborsClassifier(X_train, y_train, model_params=None):
     @return The trained K Neighbors Classifier model.
     """
     logging.debug("Training K Neighbors Classifier model")
-    if model_params is None:
-        model_params = {}
 
     processed_X_train = preProcessDataset(X_train)
     model = trainClassifier(KNeighborsClassifier, model_params, processed_X_train, y_train)

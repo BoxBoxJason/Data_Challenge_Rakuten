@@ -1,5 +1,13 @@
-
+import logging
+from os.path import join
 from pandas import DataFrame
+from sklearn.model_selection import GridSearchCV
+from utils.json import saveJson, convertToSerializable
+
+# Best params json file name
+__BEST_PARAM_FILENAME = 'best_params.json'
+# All results json file name
+__ALL_RESULTS_FILENAME = 'all_results.json'
 
 
 def predictTestDataset(model, processed_X_test, results_path=None):
@@ -35,3 +43,25 @@ def trainClassifier(model_class, model_params, processed_X_train, y_train):
     model = model_class(**model_params, n_jobs=-1, verbose=2)
     model.fit(processed_X_train, y_train)
     return model
+
+
+def optimizeModelParameters(model_class, model_name, model_params_grid, model_results_path, processed_X_train, y_train):
+    logging.debug(f"Optimizing {model_name} hyperparameters")
+    model = model_class()
+
+    grid_search = GridSearchCV(estimator=model, param_grid=model_params_grid, cv=5, n_jobs=-1, verbose=2, scoring='f1_weighted')
+
+    grid_search.fit(processed_X_train, y_train)
+
+    logging.info(f"Best parameters for {model_name} : {grid_search.best_params_}")
+    logging.info(f"Best score for {model_name}: {grid_search.best_score_}")
+
+    best_params_path = join(model_results_path,__BEST_PARAM_FILENAME)
+    logging.info(f"Saving best parameters at {best_params_path}")
+    saveJson(grid_search.best_params_, best_params_path)
+
+    all_tests_results_path = join(model_results_path, __ALL_RESULTS_FILENAME)
+    logging.info(f"Saving all tests results at {all_tests_results_path}")
+    saveJson(convertToSerializable(grid_search.cv_results_), all_tests_results_path)
+
+    return grid_search.best_estimator_
