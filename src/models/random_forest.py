@@ -36,7 +36,7 @@ def optimizeRandomForestClassifierParameters(X_train, y_train):
     @return The trained Random Forest Classifier model.
     """
     param_grid = {
-        'n_estimators': [100, 200, 300,400,500],
+        'n_estimators': [100, 200, 300],
         'max_depth': [None,10, 20, 30],
         'max_features': ['auto', 'sqrt', 'log2']
     }

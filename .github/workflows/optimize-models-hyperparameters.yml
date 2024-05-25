@@ -30,7 +30,7 @@ jobs:
           python ./src/__main__.py optimize_random_forest
 
       - name: Upload result
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: results_directory_random_forest
           path: ./results/random_forest_results
@@ -59,7 +59,7 @@ jobs:
           python ./src/__main__.py optimize_k_nearest_neighbors
 
       - name: Upload result
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: results_directory_k_nearest_neighbors
           path: ./results/k_nearest_neighbors_results
@@ -88,7 +88,7 @@ jobs:
           python ./src/__main__.py optimize_naive_bayes_gaussian
 
       - name: Upload result
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: results_directory_bayesian_naive_gaussian
           path: ./results/naive_bayes_results/gaussian
@@ -117,7 +117,7 @@ jobs:
           python ./src/__main__.py optimize_naive_bayes_multinomial
 
       - name: Upload result
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: results_directory_bayesian_naive_multinomial
           path: ./results/naive_bayes_results/multinomial
@@ -146,7 +146,7 @@ jobs:
           python ./src/__main__.py optimize_naive_bayes_complement
 
       - name: Upload result
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: results_directory_bayesian_naive_complement
           path: ./results/naive_bayes_results/complement
@@ -175,7 +175,7 @@ jobs:
           python ./src/__main__.py optimize_naive_bayes_bernoulli
 
       - name: Upload result
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: results_directory_bayesian_naive_bernoulli
           path: ./results/naive_bayes_results/bernoulli
@@ -204,7 +204,7 @@ jobs:
           python ./src/__main__.py optimize_gradient_boosting
 
       - name: Upload result
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: results_directory_gradient_boosting
           path: ./results/gradient_boosting_results
@@ -233,7 +233,7 @@ jobs:
           python ./src/__main__.py optimize_hist_gradient_boosting
 
       - name: Upload result
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: results_directory_hist_gradient_boosting
           path: ./results/hist_gradient_boosting_results
@@ -262,10 +262,10 @@ jobs:
           python ./src/__main__.py optimize_svc
 
       - name: Upload result
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: results_directory_svc
-          path: ./results/svm_results/svc
+          path: ./results/svc
 
   optimize-nu-svc:
     runs-on: ubuntu-latest
@@ -291,10 +291,10 @@ jobs:
           python ./src/__main__.py optimize_nu_svc
 
       - name: Upload result
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: results_directory_nu_svc
-          path: ./results/svm_results/nu_svc
+          path: ./results/nu_svc
 
   optimize-linear-svc:
     runs-on: ubuntu-latest
@@ -320,7 +320,7 @@ jobs:
           python ./src/__main__.py optimize_linear_svc
 
       - name: Upload result
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: results_directory_linear_svc
-          path: ./results/svm_results/linear_svc
+          path: ./results/linear_svc

@@ -22,7 +22,6 @@ def preProcessDatasetGradientBoosting(dataset):
     """
     @brief Preprocesses the dataset.
 
-
     @param dataset The dataset to be preprocessed.
     @return The preprocessed dataset.
     """
@@ -40,10 +39,10 @@ def optimizeGradientBoostingClassifierParameters(X_train, Y_train):
     @return The optimized Gradient Boosting Classifier.
     """
     param_grid = {
-        'n_estimators': [50, 100, 200],
-        'learning_rate': [0.01, 0.1, 1],
-        'max_depth': [3, 5, 7],
-        'min_samples_split': [2, 3, 4]
+        'n_estimators': [50, 100],
+        'learning_rate': [0.01, 0.1],
+        'max_depth': [3, 5],
+        'min_samples_split': [2, 3]
     }
 
     processed_X_train = preProcessDatasetGradientBoosting(X_train)
@@ -88,7 +87,6 @@ def predictTestDatasetGradientBoosting(classifier, X_test,save_results=False):
 def preProcessDatasetHistGradientBoosting(dataset):
     """
     @brief Preprocesses the dataset.
-
 
     @param dataset The dataset to be preprocessed.
     @return The preprocessed dataset.

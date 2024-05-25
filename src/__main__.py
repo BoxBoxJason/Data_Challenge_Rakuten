@@ -40,7 +40,7 @@ if 'optimize_naive_bayes_multinomial' in sys.argv:
 if 'optimize_naive_bayes_complement' in sys.argv:
     best_params = optimizeComplementNaiveBayesClassifierParameters(X_train, y_train)
 
-if 'optimize_naive_bayes_bernouilli' in sys.argv:
+if 'optimize_naive_bayes_bernoulli' in sys.argv:
     best_params = optimizeBernoulliNaiveBayesClassifierParameters(X_train, y_train)
 
 if 'optimize_svc' in sys.argv:

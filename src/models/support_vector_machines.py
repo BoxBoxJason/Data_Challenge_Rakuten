@@ -4,9 +4,6 @@ from os.path import join
 from sklearn.svm import SVC, LinearSVC, NuSVC
 from models.models import trainClassifier, predictTestDataset, optimizeModelParameters
 
-# SVM Classifier results directory path
-__K_NEIGHBORS_RESULTS_PATH = join(getenv('PROJECT_RESULTS_DIR'), 'svm_results')
-
 # SVC Classifier results directory path
 __SVC_RESULTS_PATH = join(getenv('PROJECT_RESULTS_DIR'), 'svc')
 # SVC predicted csv path
@@ -22,7 +19,6 @@ __NU_SVC_RESULTS_PATH = join(getenv('PROJECT_RESULTS_DIR'), 'nu_svc')
 # NuSVC predicted csv path
 __NU_SVC_PREDICTED_CSV_PATH = join(__NU_SVC_RESULTS_PATH, 'predicted_Y_test.csv')
 
-makedirs(__K_NEIGHBORS_RESULTS_PATH, exist_ok=True)
 makedirs(__SVC_RESULTS_PATH, exist_ok=True)
 makedirs(__LINEAR_SVC_RESULTS_PATH, exist_ok=True)
 makedirs(__NU_SVC_RESULTS_PATH, exist_ok=True)
@@ -50,16 +46,16 @@ def optimizeSVCParameters(X_train, y_train):
     @param y_train The target variable.
     @return The trained SVC Classifier model.
     """
-    param_grid = {
-        'C': [0.1, 1, 10],
-        'kernel': ['linear', 'poly', 'rbf', 'sigmoid'],
-        'degree': [2, 3, 4],
-        'gamma': ['scale', 'auto'],
-    }
+    param_grid = param_grid = [
+        {'C': [0.1, 1, 10], 'kernel': ['linear']},
+        {'C': [0.1, 1, 10], 'kernel': ['rbf'], 'gamma': ['scale', 'auto']},
+        {'C': [0.1, 1, 10], 'kernel': ['poly'], 'degree': [2, 3], 'gamma': ['scale', 'auto']},
+        {'C': [0.1, 1, 10], 'kernel': ['sigmoid'], 'gamma': ['scale', 'auto']}
+    ]
 
     processed_X_train = preProcessDatasetSVC(X_train)
 
-    return optimizeModelParameters(SVC,'Gaussian Naive Bayes Classifier', param_grid, __SVC_RESULTS_PATH, processed_X_train,y_train)
+    return optimizeModelParameters(SVC,'SVC', param_grid, __SVC_RESULTS_PATH, processed_X_train,y_train)
 
 
 def trainSVC(X_train, y_train, model_params={}):

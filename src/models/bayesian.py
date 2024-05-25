@@ -31,6 +31,7 @@ makedirs(__NAIVE_BAYES_RESULTS_PATH, exist_ok=True)
 makedirs(__NAIVE_BAYES_GAUSSIAN_RESULTS_PATH, exist_ok=True)
 makedirs(__NAIVE_BAYES_COMPLEMENT_RESULTS_PATH, exist_ok=True)
 makedirs(__NAIVE_BAYES_MULTINOMIAL_RESULTS_PATH, exist_ok=True)
+makedirs(__NAIVE_BAYES_BERNOULLI_RESULTS_PATH, exist_ok=True)
 
 def preProcessDatasetGaussian(dataset):
     """
