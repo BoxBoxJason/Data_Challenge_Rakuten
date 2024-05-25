@@ -1,4 +1,5 @@
 import logging
+import inspect
 from os.path import join
 from pandas import DataFrame
 from sklearn.model_selection import GridSearchCV
@@ -68,6 +69,10 @@ def trainClassifier(model_class, model_params, processed_X_train, y_train):
     @param y_train The target variable.
     @return The trained classifier model.
     """
+    init_signature = inspect.signature(model_class.__init__)
+
+    if 'n_jobs' in init_signature.parameters:
+        model_params.setdefault('n_jobs', -1)
     model = model_class(**model_params)
     model.fit(processed_X_train, y_train)
     return model
@@ -77,7 +82,7 @@ def optimizeModelParameters(model_class, model_name, model_params_grid, model_re
     logging.debug(f"Optimizing {model_name} hyperparameters")
     model = model_class()
 
-    grid_search = GridSearchCV(estimator=model, param_grid=model_params_grid, cv=5, n_jobs=-1, verbose=2, scoring='f1_weighted')
+    grid_search = GridSearchCV(estimator=model, param_grid=model_params_grid, cv=5, n_jobs=-1, verbose=3, scoring='f1_weighted')
 
     grid_search.fit(processed_X_train, y_train)
 

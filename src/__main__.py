@@ -19,65 +19,77 @@ from models.bayesian import optimizeComplementNaiveBayesClassifierParameters, op
     trainAndTestBernoulliNaiveBayesClassifier
 from models.support_vector_machines import optimizeSVCParameters, optimizeLinearSVCParameters, optimizeNuSVCParameters, \
     trainAndTestSVC, trainAndTestLinearSVC, trainAndTestNuSVC
+from models.extra_trees import optimizeExtraTreesClassifierParameters, trainAndTestExtraTreesClassifier
+from models.adaboost import optimizeAdaBoostClassifierParameters, trainAndTestAdaBoostClassifier
+from models.bagging import optimizeBaggingClassifierParameters, trainAndTestBaggingClassifier
 
 setupCustomLogger('DEBUG')
 X_train, X_test, y_train = prepareDatasets(os.environ['PROJECT_RAW_DATA_DIR'])
 
-if 'optimize_random_forest' in sys.argv:
-    best_params = optimizeRandomForestClassifierParameters(X_train, y_train)
+if 'optimize_rf' in sys.argv:
+    optimizeRandomForestClassifierParameters(X_train, y_train)
 
-if 'optimize_gradient_boosting' in sys.argv:
-    best_params = optimizeGradientBoostingClassifierParameters(X_train, y_train)
+if 'optimize_gb' in sys.argv:
+    optimizeGradientBoostingClassifierParameters(X_train, y_train)
 
-if 'optimize_hist_gradient_boosting' in sys.argv:
-    best_params = optimizeHistGradientBoostingClassifierParameters(X_train, y_train)
+if 'optimize_hgb' in sys.argv:
+    optimizeHistGradientBoostingClassifierParameters(X_train, y_train)
 
-if 'optimize_k_nearest_neighbors' in sys.argv:
-    best_params = optimizeKNeighborsClassifierParameters(X_train, y_train)
+if 'optimize_knn' in sys.argv:
+    optimizeKNeighborsClassifierParameters(X_train, y_train)
 
-if 'optimize_naive_bayes_gaussian' in sys.argv:
-    best_params = optimizeNaiveBayesGaussianClassifierParameters(X_train, y_train)
+if 'optimize_gnb' in sys.argv:
+    optimizeNaiveBayesGaussianClassifierParameters(X_train, y_train)
 
-if 'optimize_naive_bayes_multinomial' in sys.argv:
-    best_params = optimizeMultinomialNaiveBayesClassifierParameters(X_train, y_train)
+if 'optimize_mnb' in sys.argv:
+    optimizeMultinomialNaiveBayesClassifierParameters(X_train, y_train)
 
-if 'optimize_naive_bayes_complement' in sys.argv:
-    best_params = optimizeComplementNaiveBayesClassifierParameters(X_train, y_train)
+if 'optimize_cnb' in sys.argv:
+    optimizeComplementNaiveBayesClassifierParameters(X_train, y_train)
 
-if 'optimize_naive_bayes_bernoulli' in sys.argv:
-    best_params = optimizeBernoulliNaiveBayesClassifierParameters(X_train, y_train)
+if 'optimize_bnb' in sys.argv:
+    optimizeBernoulliNaiveBayesClassifierParameters(X_train, y_train)
 
 if 'optimize_svc' in sys.argv:
-    best_params = optimizeSVCParameters(X_train, y_train)
+    optimizeSVCParameters(X_train, y_train)
 
 if 'optimize_linear_svc' in sys.argv:
-    best_params = optimizeLinearSVCParameters(X_train, y_train)
+    optimizeLinearSVCParameters(X_train, y_train)
 
 if 'optimize_nu_svc' in sys.argv:
-    best_params = optimizeNuSVCParameters(X_train, y_train)
+    optimizeNuSVCParameters(X_train, y_train)
 
-if 'predict_random_forest' in sys.argv:
+if 'optimize_et' in sys.argv:
+    optimizeExtraTreesClassifierParameters(X_train, y_train)
+
+if 'optimize_ab' in sys.argv:
+    optimizeAdaBoostClassifierParameters(X_train, y_train)
+
+if 'optimize_bagging' in sys.argv:
+    optimizeBaggingClassifierParameters(X_train, y_train)
+
+if 'predict_rf' in sys.argv:
     trainAndTestRandomForestClassifier(X_train, y_train, X_test)
 
-if 'predict_gradient_boosting' in sys.argv:
+if 'predict_gb' in sys.argv:
     trainAndTestGradientBoostingClassifier(X_train, y_train, X_test)
 
-if 'predict_hist_gradient_boosting' in sys.argv:
+if 'predict_hgb' in sys.argv:
     trainAndTestHistGradientBoostingClassifier(X_train, y_train, X_test)
 
-if 'predict_k_nearest_neighbors' in sys.argv:
+if 'predict_knn' in sys.argv:
     trainAndTestKNeighborsClassifier(X_train, y_train, X_test)
 
-if 'predict_naive_bayes_gaussian' in sys.argv:
+if 'predict_gnb' in sys.argv:
     trainAndTestNaiveBayesGaussianClassifier(X_train, y_train, X_test)
 
-if 'predict_naive_bayes_multinomial' in sys.argv:
+if 'predict_mnb' in sys.argv:
     trainAndTestMultinomialNaiveBayesClassifier(X_train, y_train, X_test)
 
-if 'predict_naive_bayes_complement' in sys.argv:
+if 'predict_cnb' in sys.argv:
     trainAndTestComplementNaiveBayesClassifier(X_train, y_train, X_test)
 
-if 'predict_naive_bayes_bernoulli' in sys.argv:
+if 'predict_bnb' in sys.argv:
     trainAndTestBernoulliNaiveBayesClassifier(X_train, y_train, X_test)
 
 if 'predict_svc' in sys.argv:
@@ -88,3 +100,12 @@ if 'predict_linear_svc' in sys.argv:
 
 if 'predict_nu_svc' in sys.argv:
     trainAndTestNuSVC(X_train, y_train, X_test)
+
+if 'predict_et' in sys.argv:
+    trainAndTestExtraTreesClassifier(X_train, y_train, X_test)
+
+if 'predict_ab' in sys.argv:
+    trainAndTestAdaBoostClassifier(X_train, y_train, X_test)
+
+if 'predict_bagging' in sys.argv:
+    trainAndTestBaggingClassifier(X_train, y_train, X_test)
