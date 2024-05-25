@@ -2,12 +2,10 @@ import logging
 from os.path import join
 from os import getenv, makedirs
 from sklearn.ensemble import RandomForestClassifier
-from models.models import predictTestDataset, trainClassifier, optimizeModelParameters
+from models.models import trainAndTestModel, optimizeModelParameters
 
 # Random Forest Classifier results path
-__RANDOM_FOREST_RESULTS_PATH = join(getenv('PROJECT_RESULTS_DIR'), 'random_forest_results')
-# Random forest predicted csv path
-__RANDOM_FOREST_PREDICTED_CSV_PATH = join(__RANDOM_FOREST_RESULTS_PATH, 'predicted_Y_test.csv')
+__RANDOM_FOREST_RESULTS_PATH = join(getenv('PROJECT_RESULTS_DIR'), 'random_forest')
 
 makedirs(__RANDOM_FOREST_RESULTS_PATH, exist_ok=True)
 
@@ -46,36 +44,21 @@ def optimizeRandomForestClassifierParameters(X_train, y_train):
     return optimizeModelParameters(RandomForestClassifier,'Random Forest Classifier', param_grid, __RANDOM_FOREST_RESULTS_PATH,processed_X_train, y_train)
 
 
-def trainRandomForestClassifier(X_train, y_train, model_params={}):
+def trainAndTestRandomForestClassifier(X_train, y_train, X_test):
     """
     @brief Trains a Random Forest Classifier model on the training data.
 
     This function trains a Random Forest Classifier model on the training data.
-    The model is trained using the best hyperparameters found by optimizeRandomForestRegressorParameters().
 
-    @param X_train The training data.
-    @param y_train The target variable.
-    @return The trained Random Forest Classifier model.
+    @param X_train The training dataset.
+    @param y_train The labels for the training dataset.
+    @param X_test The test dataset.
+    @param model_params The model parameters.
+    @return The trained Random Forest Classifier and the predictions.
     """
-    logging.debug("Training Random Forest Classifier model")
+    logging.debug("Training Random Forest Classifier")
+
     processed_X_train = preProcessDataset(X_train)
-    trained_rf_model = trainClassifier(RandomForestClassifier, model_params, processed_X_train, y_train)
-    return trained_rf_model
-
-
-def predictRandomForestClassifier(rf, X_test, save_results=False):
-    """
-    @brief Predicts the target variable using a trained Random Forest Classifier model.
-
-    This function predicts the target variable using a trained Random Forest Classifier model.
-
-    @param rf The trained Random Forest Classifier model.
-    @param X_test The test data.
-    @return The predicted target variable.
-    """
-    logging.debug("Predicting test dataset for Random Forest Classifier")
     processed_X_test = preProcessDataset(X_test)
-    if save_results:
-        logging.info(f"Saving predicted results at {__RANDOM_FOREST_PREDICTED_CSV_PATH}")
-    prediction = predictTestDataset(rf, processed_X_test, __RANDOM_FOREST_PREDICTED_CSV_PATH if save_results else None)
-    return prediction
+
+    return trainAndTestModel(RandomForestClassifier, processed_X_train, y_train, processed_X_test, __RANDOM_FOREST_RESULTS_PATH)

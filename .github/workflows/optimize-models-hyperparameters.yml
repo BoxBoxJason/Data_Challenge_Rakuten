@@ -32,8 +32,8 @@ jobs:
       - name: Upload result
         uses: actions/upload-artifact@v4
         with:
-          name: results_directory_random_forest
-          path: ./results/random_forest_results
+          name: random_forest
+          path: ./results/random_forest
 
   optimize-k-nearest-neighbors:
     runs-on: ubuntu-latest
@@ -61,8 +61,8 @@ jobs:
       - name: Upload result
         uses: actions/upload-artifact@v4
         with:
-          name: results_directory_k_nearest_neighbors
-          path: ./results/k_nearest_neighbors_results
+          name: k_nearest_neighbors
+          path: ./results/k_nearest_neighbors
 
   optimize-naive-bayes-gaussian:
     runs-on: ubuntu-latest
@@ -90,8 +90,8 @@ jobs:
       - name: Upload result
         uses: actions/upload-artifact@v4
         with:
-          name: results_directory_bayesian_naive_gaussian
-          path: ./results/naive_bayes_results/gaussian
+          name: gaussianNB
+          path: ./results/gaussianNB
 
   optimize-naive-bayes-multinomial:
     runs-on: ubuntu-latest
@@ -119,8 +119,8 @@ jobs:
       - name: Upload result
         uses: actions/upload-artifact@v4
         with:
-          name: results_directory_bayesian_naive_multinomial
-          path: ./results/naive_bayes_results/multinomial
+          name: multinomialNB
+          path: ./results/multinomialNB
 
   optimize-naive-bayes-complement:
     runs-on: ubuntu-latest
@@ -148,8 +148,8 @@ jobs:
       - name: Upload result
         uses: actions/upload-artifact@v4
         with:
-          name: results_directory_bayesian_naive_complement
-          path: ./results/naive_bayes_results/complement
+          name: complementNB
+          path: ./results/complementNB
 
   optimize-naive-bayes-bernoulli:
     runs-on: ubuntu-latest
@@ -177,8 +177,8 @@ jobs:
       - name: Upload result
         uses: actions/upload-artifact@v4
         with:
-          name: results_directory_bayesian_naive_bernoulli
-          path: ./results/naive_bayes_results/bernoulli
+          name: bernoulliNB
+          path: ./results/bernoulliNB
 
   optimize-gradient-boosting:
     runs-on: ubuntu-latest
@@ -206,8 +206,8 @@ jobs:
       - name: Upload result
         uses: actions/upload-artifact@v4
         with:
-          name: results_directory_gradient_boosting
-          path: ./results/gradient_boosting_results
+          name: gradient_boosting
+          path: ./results/gradient_boosting
 
   optimize-hist-gradient-boosting:
     runs-on: ubuntu-latest
@@ -235,8 +235,8 @@ jobs:
       - name: Upload result
         uses: actions/upload-artifact@v4
         with:
-          name: results_directory_hist_gradient_boosting
-          path: ./results/hist_gradient_boosting_results
+          name: hist_gradient_boosting
+          path: ./results/hist_gradient_boosting
 
   optimize-svc:
     runs-on: ubuntu-latest
@@ -264,7 +264,7 @@ jobs:
       - name: Upload result
         uses: actions/upload-artifact@v4
         with:
-          name: results_directory_svc
+          name: svc
           path: ./results/svc
 
   optimize-nu-svc:
@@ -293,7 +293,7 @@ jobs:
       - name: Upload result
         uses: actions/upload-artifact@v4
         with:
-          name: results_directory_nu_svc
+          name: nu_svc
           path: ./results/nu_svc
 
   optimize-linear-svc:
@@ -322,5 +322,5 @@ jobs:
       - name: Upload result
         uses: actions/upload-artifact@v4
         with:
-          name: results_directory_linear_svc
+          name: linear_svc
           path: ./results/linear_svc

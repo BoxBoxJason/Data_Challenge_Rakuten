@@ -2,12 +2,32 @@ import logging
 from os.path import join
 from pandas import DataFrame
 from sklearn.model_selection import GridSearchCV
-from utils.json import saveJson, convertToSerializable
+from utils.json import saveJson, convertToSerializable, loadJson
 
 # Best params json file name
 __BEST_PARAM_FILENAME = 'best_params.json'
 # All results json file name
 __ALL_RESULTS_FILENAME = 'all_results.json'
+# Predicted csv file name
+__PREDICTED_CSV_FILENAME = 'predicted_Y_test.csv'
+
+def trainAndTestModel(model_class, processed_X_train, y_train, processed_X_test, results_path=None):
+    """
+    @brief Trains a model on the training data and predicts the target variable using the test data.
+
+    This function trains a model on the training data and predicts the target variable using the test data.
+    The predictions are saved to a csv file if the results_path is provided.
+
+    @param model The model to be trained.
+    @param processed_X_train The training data.
+    @param y_train The target variable.
+    @param processed_X_test The test data.
+    @param results_path The path to save the predictions.
+    @return The trained model and the predictions.
+    """
+    model_best_params = getModelBestParams(results_path)
+    model = trainClassifier(model_class, model_best_params, processed_X_train, y_train)
+    return model, predictTestDataset(model, processed_X_test, results_path)
 
 
 def predictTestDataset(model, processed_X_test, results_path=None):
@@ -24,8 +44,16 @@ def predictTestDataset(model, processed_X_test, results_path=None):
     """
     prediction = model.predict(processed_X_test)
     if results_path:
+        prediction_path = join(results_path, __PREDICTED_CSV_FILENAME)
+        logging.info(f"Saving predictions at {prediction_path}")
+
+        # Set the column name to the target variable name and add offset to the index
         prediction_df = DataFrame(prediction)
-        prediction_df.to_csv(results_path, index=True)
+        prediction_df.columns = ['prdtypecode']
+
+        prediction_df.index += 84916
+
+        prediction_df.to_csv(prediction_path, index=True)
     return prediction
 
 
@@ -40,7 +68,7 @@ def trainClassifier(model_class, model_params, processed_X_train, y_train):
     @param y_train The target variable.
     @return The trained classifier model.
     """
-    model = model_class(**model_params, n_jobs=-1, verbose=2)
+    model = model_class(**model_params)
     model.fit(processed_X_train, y_train)
     return model
 
@@ -65,3 +93,20 @@ def optimizeModelParameters(model_class, model_name, model_params_grid, model_re
     saveJson(convertToSerializable(grid_search.cv_results_), all_tests_results_path)
 
     return grid_search.best_estimator_
+
+
+def getModelBestParams(model_results_path):
+    """
+    @brief Returns the best parameters path for the given model results path.
+
+
+    @param model_results_path The path to the model results.
+    @return The best parameters json object.
+    """
+    best_params_path = join(model_results_path, __BEST_PARAM_FILENAME)
+    best_params = {}
+    try:
+        best_params = loadJson(best_params_path)
+    except FileNotFoundError:
+        logging.error(f"Best parameters file not found at {best_params_path}, using default parameters.")
+    return best_params

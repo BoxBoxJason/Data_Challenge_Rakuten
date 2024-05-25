@@ -2,17 +2,13 @@ import logging
 from os.path import join
 from os import getenv, makedirs
 from sklearn.ensemble import GradientBoostingClassifier, HistGradientBoostingClassifier
-from models.models import predictTestDataset, trainClassifier, optimizeModelParameters
+from models.models import trainAndTestModel, optimizeModelParameters
 
 # Gradient Boosting Classifier results path
-__GRADIENT_BOOSTING_RESULTS_PATH = join(getenv('PROJECT_RESULTS_DIR'), 'gradient_boosting_results')
-# Gradient Boosting predicted csv path
-__GRADIENT_BOOSTING_PREDICTED_CSV_PATH = join(__GRADIENT_BOOSTING_RESULTS_PATH, 'predicted_Y_test.csv')
+__GRADIENT_BOOSTING_RESULTS_PATH = join(getenv('PROJECT_RESULTS_DIR'), 'gradient_boosting')
 
 #Hist Gradient Boosting Classifier results path
-__HIST_GRADIENT_BOOSTING_RESULTS_PATH = join(getenv('PROJECT_RESULTS_DIR'), 'hist_gradient_boosting_results')
-# Hist Gradient Boosting predicted csv path
-__HIST_GRADIENT_BOOSTING_PREDICTED_CSV_PATH = join(__HIST_GRADIENT_BOOSTING_RESULTS_PATH, 'predicted_Y_test.csv')
+__HIST_GRADIENT_BOOSTING_RESULTS_PATH = join(getenv('PROJECT_RESULTS_DIR'), 'hist_gradient_boosting')
 
 makedirs(__GRADIENT_BOOSTING_RESULTS_PATH, exist_ok=True)
 makedirs(__HIST_GRADIENT_BOOSTING_RESULTS_PATH, exist_ok=True)
@@ -50,38 +46,23 @@ def optimizeGradientBoostingClassifierParameters(X_train, Y_train):
     return optimizeModelParameters(GradientBoostingClassifier,'Gradient Boosting Classifier',param_grid, __GRADIENT_BOOSTING_RESULTS_PATH, processed_X_train, Y_train)
 
 
-def trainGradientBoostingClassifier(X_train, Y_train):
+def trainAndTestGradientBoostingClassifier(X_train, Y_train, X_test):
     """
-    @brief Trains the Gradient Boosting Classifier.
+    @brief Trains a Gradient Boosting Classifier model on the training data.
+
 
     @param X_train The training dataset.
     @param Y_train The labels for the training dataset.
-    @return The trained Gradient Boosting Classifier.
+    @param X_test The test dataset.
+    @param model_params The model parameters.
+    @return The trained Gradient Boosting Classifier and the predictions.
     """
     logging.debug("Training Gradient Boosting Classifier")
 
     processed_X_train = preProcessDatasetGradientBoosting(X_train)
-
-    return trainClassifier(GradientBoostingClassifier, processed_X_train, Y_train)
-
-
-def predictTestDatasetGradientBoosting(classifier, X_test,save_results=False):
-    """
-    @brief Predicts the test dataset with the Gradient Boosting Classifier.
-
-
-    @param classifier The trained Gradient Boosting Classifier.
-    @param X_test The test dataset.
-    @return The predicted values for the test dataset.
-    """
-    logging.debug("Predicting test dataset with Gradient Boosting Classifier")
-
     processed_X_test = preProcessDatasetGradientBoosting(X_test)
-    if save_results:
-        logging.info(f"Saving predicted target variable at {__GRADIENT_BOOSTING_PREDICTED_CSV_PATH}")
 
-    predictions = predictTestDataset(classifier, X_test, __GRADIENT_BOOSTING_PREDICTED_CSV_PATH if save_results else None)
-    return predictions
+    return trainAndTestModel(GradientBoostingClassifier, processed_X_train, Y_train, processed_X_test, __GRADIENT_BOOSTING_RESULTS_PATH)
 
 
 def preProcessDatasetHistGradientBoosting(dataset):
@@ -116,36 +97,20 @@ def optimizeHistGradientBoostingClassifierParameters(X_train, Y_train):
     return optimizeModelParameters(HistGradientBoostingClassifier,'Hist Gradient Boosting Classifier',param_grid, __HIST_GRADIENT_BOOSTING_RESULTS_PATH, processed_X_train, Y_train)
 
 
-def trainHistGradientBoostingClassifier(X_train, Y_train):
+def trainAndTestHistGradientBoostingClassifier(X_train, Y_train, X_test):
     """
-    @brief Trains the Hist Gradient Boosting Classifier.
+    @brief Trains a Hist Gradient Boosting Classifier model on the training data.
 
 
     @param X_train The training dataset.
     @param Y_train The labels for the training dataset.
-    @return The trained Hist Gradient Boosting Classifier.
+    @param X_test The test dataset.
+    @param model_params The model parameters.
+    @return The trained Hist Gradient Boosting Classifier and the predictions.
     """
     logging.debug("Training Hist Gradient Boosting Classifier")
 
     processed_X_train = preProcessDatasetHistGradientBoosting(X_train)
-
-    return trainClassifier(HistGradientBoostingClassifier, processed_X_train, Y_train)
-
-
-def predictTestDatasetHistGradientBoosting(classifier, X_test,save_results=False):
-    """
-    @brief Predicts the test dataset with the Hist Gradient Boosting Classifier.
-
-
-    @param classifier The trained Hist Gradient Boosting Classifier.
-    @param X_test The test dataset.
-    @return The predicted values for the test dataset.
-    """
-    logging.debug("Predicting test dataset with Hist Gradient Boosting Classifier")
-
     processed_X_test = preProcessDatasetHistGradientBoosting(X_test)
-    if save_results:
-        logging.info(f"Saving predicted target variable at {__HIST_GRADIENT_BOOSTING_PREDICTED_CSV_PATH}")
 
-    predictions = predictTestDataset(classifier, processed_X_test, __HIST_GRADIENT_BOOSTING_PREDICTED_CSV_PATH if save_results else None)
-    return predictions
+    return trainAndTestModel(HistGradientBoostingClassifier, processed_X_train, Y_train, processed_X_test, __HIST_GRADIENT_BOOSTING_RESULTS_PATH)

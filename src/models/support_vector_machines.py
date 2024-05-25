@@ -2,22 +2,16 @@ import logging
 from os import getenv, makedirs
 from os.path import join
 from sklearn.svm import SVC, LinearSVC, NuSVC
-from models.models import trainClassifier, predictTestDataset, optimizeModelParameters
+from models.models import trainAndTestModel, optimizeModelParameters
 
 # SVC Classifier results directory path
 __SVC_RESULTS_PATH = join(getenv('PROJECT_RESULTS_DIR'), 'svc')
-# SVC predicted csv path
-__SVC_PREDICTED_CSV_PATH = join(__SVC_RESULTS_PATH, 'predicted_Y_test.csv')
 
 # LinearSVC Classifier results directory path
 __LINEAR_SVC_RESULTS_PATH = join(getenv('PROJECT_RESULTS_DIR'), 'linear_svc')
-# LinearSVC predicted csv path
-__LINEAR_SVC_PREDICTED_CSV_PATH = join(__LINEAR_SVC_RESULTS_PATH, 'predicted_Y_test.csv')
 
 # NuSVC Classifier results directory path
 __NU_SVC_RESULTS_PATH = join(getenv('PROJECT_RESULTS_DIR'), 'nu_svc')
-# NuSVC predicted csv path
-__NU_SVC_PREDICTED_CSV_PATH = join(__NU_SVC_RESULTS_PATH, 'predicted_Y_test.csv')
 
 makedirs(__SVC_RESULTS_PATH, exist_ok=True)
 makedirs(__LINEAR_SVC_RESULTS_PATH, exist_ok=True)
@@ -58,35 +52,24 @@ def optimizeSVCParameters(X_train, y_train):
     return optimizeModelParameters(SVC,'SVC', param_grid, __SVC_RESULTS_PATH, processed_X_train,y_train)
 
 
-def trainSVC(X_train, y_train, model_params={}):
+def trainAndTestSVC(X_train, y_train, X_test):
     """
     @brief Trains a SVC Classifier model on the training data.
 
     This function trains a SVC Classifier model on the training data.
 
-    @param X_train The training data.
-    @param y_train The target variable.
-    @param model_params The parameters for the SVC Classifier model.
-    @return The trained SVC Classifier model.
+    @param X_train The training dataset.
+    @param y_train The labels for the training dataset.
+    @param X_test The test dataset.
+    @param model_params The model parameters.
+    @return The trained SVC Classifier and the predictions.
     """
     logging.debug("Training SVC model")
 
     processed_X_train = preProcessDatasetSVC(X_train)
-    model = trainClassifier(SVC, model_params, processed_X_train, y_train)
-
-    return model
-
-
-def predictSVC(svc, X_test, save_results=False):
-    logging.debug("Predicting target variable using SVC model")
     processed_X_test = preProcessDatasetSVC(X_test)
 
-    if save_results:
-        logging.info(f"Saving predicted target variable at {__SVC_PREDICTED_CSV_PATH}")
-
-    predicted_Y_test = predictTestDataset(svc, processed_X_test, __SVC_PREDICTED_CSV_PATH if save_results else None)
-
-    return predicted_Y_test
+    return trainAndTestModel(SVC, processed_X_train, y_train, processed_X_test, __SVC_RESULTS_PATH)
 
 
 def preProcessDatasetLinearSVC(dataset):
@@ -125,35 +108,24 @@ def optimizeLinearSVCParameters(X_train, y_train):
     return optimizeModelParameters(LinearSVC,'Linear SVC Classifier', param_grid, __LINEAR_SVC_RESULTS_PATH, processed_X_train,y_train)
 
 
-def trainLinearSVC(X_train, y_train, model_params={}):
+def trainAndTestLinearSVC(X_train, y_train, X_test):
     """
     @brief Trains a Linear SVC Classifier model on the training data.
 
     This function trains a Linear SVC Classifier model on the training data.
 
-    @param X_train The training data.
-    @param y_train The target variable.
-    @param model_params The parameters for the Linear SVC Classifier model.
-    @return The trained Linear SVC Classifier model.
+    @param X_train The training dataset.
+    @param y_train The labels for the training dataset.
+    @param X_test The test dataset.
+    @param model_params The model parameters.
+    @return The trained Linear SVC Classifier and the predictions.
     """
     logging.debug("Training Linear SVC model")
 
     processed_X_train = preProcessDatasetLinearSVC(X_train)
-    model = trainClassifier(LinearSVC, model_params, processed_X_train, y_train)
-
-    return model
-
-
-def predictLinearSVC(linear_svc, X_test, save_results=False):
-    logging.debug("Predicting target variable using Linear SVC model")
     processed_X_test = preProcessDatasetLinearSVC(X_test)
 
-    if save_results:
-        logging.info(f"Saving predicted target variable at {__LINEAR_SVC_PREDICTED_CSV_PATH}")
-
-    predicted_Y_test = predictTestDataset(linear_svc, processed_X_test, __LINEAR_SVC_PREDICTED_CSV_PATH if save_results else None)
-
-    return predicted_Y_test
+    return trainAndTestModel(LinearSVC, processed_X_train, y_train, processed_X_test, __LINEAR_SVC_RESULTS_PATH)
 
 
 def preProcessDatasetNuSVC(dataset):
@@ -191,32 +163,21 @@ def optimizeNuSVCParameters(X_train, y_train):
     return optimizeModelParameters(NuSVC,'NuSVC Classifier', param_grid, __NU_SVC_RESULTS_PATH, processed_X_train,y_train)
 
 
-def trainNuSVC(X_train, y_train, model_params={}):
+def trainAndTestNuSVC(X_train, y_train, X_test):
     """
     @brief Trains a NuSVC Classifier model on the training data.
 
     This function trains a NuSVC Classifier model on the training data.
 
-    @param X_train The training data.
-    @param y_train The target variable.
-    @param model_params The parameters for the NuSVC Classifier model.
-    @return The trained NuSVC Classifier model.
+    @param X_train The training dataset.
+    @param y_train The labels for the training dataset.
+    @param X_test The test dataset.
+    @param model_params The model parameters.
+    @return The trained NuSVC Classifier and the predictions.
     """
     logging.debug("Training NuSVC model")
 
     processed_X_train = preProcessDatasetNuSVC(X_train)
-    model = trainClassifier(NuSVC, model_params, processed_X_train, y_train)
+    processed_X_test = preProcessDatasetNuSVC(X_test)
 
-    return model
-
-
-def predictNuSVC(nu_svc, X_test, save_results=False):
-    logging.debug("Predicting target variable using Linear SVC model")
-    processed_X_test = preProcessDatasetLinearSVC(X_test)
-
-    if save_results:
-        logging.info(f"Saving predicted target variable at {__NU_SVC_PREDICTED_CSV_PATH}")
-
-    predicted_Y_test = predictTestDataset(nu_svc, processed_X_test, __NU_SVC_PREDICTED_CSV_PATH if save_results else None)
-
-    return predicted_Y_test
+    return trainAndTestModel(NuSVC, processed_X_train, y_train, processed_X_test, __NU_SVC_RESULTS_PATH)
