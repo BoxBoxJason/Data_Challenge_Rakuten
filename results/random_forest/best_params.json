@@ -1,0 +1,5 @@
+{
+    "max_depth": null,
+    "max_features": "log2",
+    "n_estimators": 300
+}

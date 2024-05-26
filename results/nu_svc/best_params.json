@@ -1,0 +1,6 @@
+{
+    "degree": 2,
+    "gamma": "scale",
+    "kernel": "rbf",
+    "nu": 0.1
+}

@@ -1,0 +1,7 @@
+{
+    "C": 1,
+    "dual": true,
+    "loss": "hinge",
+    "multi_class": "crammer_singer",
+    "penalty": "l1"
+}
