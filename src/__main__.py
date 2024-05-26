@@ -149,6 +149,3 @@ if 'graph_bagging' in sys.argv:
 
 if 'graph_scores' in sys.argv:
     print(drawScores())
-
-
-

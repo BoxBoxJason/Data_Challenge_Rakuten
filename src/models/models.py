@@ -4,8 +4,9 @@ from os.path import join, isdir
 from os import listdir, getenv
 from pandas import DataFrame
 from sklearn.model_selection import GridSearchCV
-from utils.json import saveJson, convertToSerializable, loadJson
 import seaborn
+from utils.json import saveJson, convertToSerializable, loadJson
+from graphs.graphs import drawScoresBarChart
 
 # Best params json file name
 __BEST_PARAM_FILENAME = 'best_params.json'
@@ -144,6 +145,7 @@ def drawGraphs(model_name, results_path, x_feature, hue_feature=None, col_featur
     graph = seaborn.catplot(data=df, x=x_feature, y='mean_test_score', hue=hue_feature, palette='mako',col=col_feature, kind='bar')
     graph.savefig(join(results_path, f'{model_name}_mean_test_scores.png'))
 
+
 def drawScores():
     """
     @brief Draws scores comparison graph for all models.
@@ -162,9 +164,6 @@ def drawScores():
                 scores[file] = max([score for score in all_results['mean_test_score'] if str(score) != 'nan'])
             except FileNotFoundError:
                 logging.error(f"File not found at {all_results_path}")
-    seaborn.set_theme(style="whitegrid")
-    graph = seaborn.barplot(x=list(scores.keys()), y=list(scores.values()), palette='mako', saturation=0.5)
-    graph.set_xticklabels(graph.get_xticklabels(), rotation=20)
-    graph.figure.savefig(join(result_path, 'scoresComparison.png'))
+    drawScoresBarChart('Weighted F1', scores, join(result_path, 'scores.png'),True)
 
     return scores
