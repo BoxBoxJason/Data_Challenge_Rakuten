@@ -9,7 +9,7 @@ os.environ['PROJECT_RESULTS_DIR'] = os.path.join(os.environ['PROJECT_ROOT_DIR'],
 
 from utils.logger import setupCustomLogger
 from data.prepare import prepareDatasets
-from models.random_forest import optimizeRandomForestClassifierParameters, trainAndTestRandomForestClassifier
+from models.random_forest import optimizeRandomForestClassifierParameters, trainAndTestRandomForestClassifier, drawGraphsRandomForest
 from models.gradient_boosting import optimizeGradientBoostingClassifierParameters, optimizeHistGradientBoostingClassifierParameters, \
     trainAndTestGradientBoostingClassifier, trainAndTestHistGradientBoostingClassifier
 from models.k_nearest_neighbors import optimizeKNeighborsClassifierParameters, trainAndTestKNeighborsClassifier
@@ -109,3 +109,6 @@ if 'predict_ab' in sys.argv:
 
 if 'predict_bagging' in sys.argv:
     trainAndTestBaggingClassifier(X_train, y_train, X_test)
+
+if 'graph_rf' in sys.argv:
+    drawGraphsRandomForest()

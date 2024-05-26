@@ -4,6 +4,7 @@ from os.path import join
 from pandas import DataFrame
 from sklearn.model_selection import GridSearchCV
 from utils.json import saveJson, convertToSerializable, loadJson
+import seaborn
 
 # Best params json file name
 __BEST_PARAM_FILENAME = 'best_params.json'
@@ -115,3 +116,30 @@ def getModelBestParams(model_results_path):
     except FileNotFoundError:
         logging.error(f"Best parameters file not found at {best_params_path}, using default parameters.")
     return best_params
+
+def drawGraphs(model_name, results_path):
+    """
+    @brief Draws graphs for the given results.
+
+    This function draws graphs for the given results.
+    Display mean test scores for each hyperparameter which are max_depth, max_features and n_estimators.
+
+    @param results The results to draw graphs for.
+    @param model_name The model name.
+    @param results_path The path to save the graphs.
+    """
+    all_results_path = join(results_path, __ALL_RESULTS_FILENAME)
+    all_results = loadJson(all_results_path)
+    logging.info(f"Drawing graphs for {model_name} results")
+
+    params_test_list = all_results['params']
+    test_scores = all_results['mean_test_score']
+
+    df = DataFrame(params_test_list)
+    df['mean_test_score'] = test_scores
+    df.fillna(0, inplace=True)
+
+    seaborn.set_theme(style="whitegrid")
+    graph = seaborn.catplot(data=df, x='max_features', y='mean_test_score', hue='max_depth', palette='mako',col='n_estimators', kind='bar')
+    graph.savefig(join(results_path, f'{model_name}_mean_test_scores.png'))
+

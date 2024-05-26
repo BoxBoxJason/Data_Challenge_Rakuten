@@ -2,7 +2,7 @@ import logging
 from os.path import join
 from os import getenv, makedirs
 from sklearn.ensemble import RandomForestClassifier
-from models.models import trainAndTestModel, optimizeModelParameters
+from models.models import trainAndTestModel, optimizeModelParameters, drawGraphs
 
 # Random Forest Classifier results path
 __RANDOM_FOREST_RESULTS_PATH = join(getenv('PROJECT_RESULTS_DIR'), 'random_forest')
@@ -62,3 +62,13 @@ def trainAndTestRandomForestClassifier(X_train, y_train, X_test):
     processed_X_test = preProcessDataset(X_test)
 
     return trainAndTestModel(RandomForestClassifier, processed_X_train, y_train, processed_X_test, __RANDOM_FOREST_RESULTS_PATH)
+
+def drawGraphsRandomForest():
+    """
+    @brief Draws graphs for the Random Forest Classifier results.
+
+    This function draws graphs for the Random Forest Classifier results.
+    Display mean test scores for each hyperparameter which are max_depth, max_features and n_estimators.
+    """
+    logging.debug("Drawing Random Forest Classifier graphs")
+    drawGraphs('Random Forest Classifier', __RANDOM_FOREST_RESULTS_PATH)
