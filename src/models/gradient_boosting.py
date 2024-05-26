@@ -35,10 +35,8 @@ def optimizeGradientBoostingClassifierParameters(X_train, Y_train):
     @return The optimized Gradient Boosting Classifier.
     """
     param_grid = {
-        'n_estimators': [50, 100],
-        'learning_rate': [0.01, 0.1],
-        'max_depth': [3, 5],
-        'min_samples_split': [2, 3]
+        'n_estimators': [100,200,300],
+        'learning_rate': [0.01, 0.1, 1],
     }
 
     processed_X_train = preProcessDatasetGradientBoosting(X_train)

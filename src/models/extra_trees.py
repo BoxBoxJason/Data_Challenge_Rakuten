@@ -32,9 +32,7 @@ def optimizeExtraTreesClassifierParameters(X_train, y_train):
     @return The trained Extra Trees Classifier model.
     """
     param_grid = {
-        'n_estimators': [50, 100, 200],
-        'criterion': ['gini', 'entropy'],
-        'max_depth': [None, 10, 20],
+        'n_estimators': [100, 200, 300],
         'max_features': ['auto', 'sqrt', 'log2']
     }
 

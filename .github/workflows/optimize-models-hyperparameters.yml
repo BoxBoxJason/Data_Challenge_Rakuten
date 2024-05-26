@@ -325,7 +325,7 @@ jobs:
           name: linear_svc
           path: ./results/linear_svc
 
-  optimize-ab:
+  optimize-ada-boosting:
     runs-on: ubuntu-latest
     timeout-minutes: 4320
 

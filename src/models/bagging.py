@@ -33,8 +33,6 @@ def optimizeBaggingClassifierParameters(X_train, y_train):
     """
     param_grid = {
         'n_estimators': [None, 50, 100],
-        'max_samples': [1.0, 0.5],
-        'max_features': [1.0, 0.5],
         'bootstrap': [True, False],
         'bootstrap_features': [True, False]
     }
