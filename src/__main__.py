@@ -9,7 +9,7 @@ os.environ['PROJECT_RESULTS_DIR'] = os.path.join(os.environ['PROJECT_ROOT_DIR'],
 
 from utils.logger import setupCustomLogger
 from data.prepare import prepareDatasets
-from models.models import drawScores
+from models.models import drawValidationScores, drawRealScores
 from models.random_forest import optimizeRandomForestClassifierParameters, trainAndTestRandomForestClassifier, drawGraphsRandomForest
 from models.gradient_boosting import optimizeGradientBoostingClassifierParameters, optimizeHistGradientBoostingClassifierParameters, \
     trainAndTestGradientBoostingClassifier, trainAndTestHistGradientBoostingClassifier, drawGraphsGradientBoosting
@@ -148,4 +148,5 @@ if 'graph_bagging' in sys.argv:
     drawGraphsBagging()
 
 if 'graph_scores' in sys.argv:
-    print(drawScores())
+    print('Validation Scores: ', drawValidationScores(False))
+    drawRealScores(True)

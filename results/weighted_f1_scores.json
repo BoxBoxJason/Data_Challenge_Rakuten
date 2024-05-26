@@ -1,4 +1,6 @@
 {
     "k_nearest_neighbors": 0.47771445098907306,
-    "mulinomialNB": 0.7714327375589354
+    "mulinomialNB": 0.7714327375589354,
+    "nu_svc": 0.8152957337831351,
+    "random_forest": 0.8064254845663599
 }

@@ -119,6 +119,7 @@ def getModelBestParams(model_results_path):
         logging.error(f"Best parameters file not found at {best_params_path}, using default parameters.")
     return best_params
 
+
 def drawGraphs(model_name, results_path, x_feature, hue_feature=None, col_feature=None, row_feature=None, style_feature=None):
     """
     @brief Draws graphs for the given results.
@@ -146,7 +147,7 @@ def drawGraphs(model_name, results_path, x_feature, hue_feature=None, col_featur
     graph.savefig(join(results_path, f'{model_name}_mean_test_scores.png'))
 
 
-def drawScores():
+def drawValidationScores(show=True):
     """
     @brief Draws scores comparison graph for all models.
 
@@ -164,6 +165,21 @@ def drawScores():
                 scores[file] = max([score for score in all_results['mean_test_score'] if str(score) != 'nan'])
             except FileNotFoundError:
                 logging.error(f"File not found at {all_results_path}")
-    drawScoresBarChart('Weighted F1', scores, join(result_path, 'scores.png'),True)
+    drawScoresBarChart('Weighted F1', scores, join(result_path, 'validation_scores.png'),show)
 
     return scores
+
+
+def drawRealScores(show=True):
+    """
+    @brief Draws scores comparison graph for all models.
+
+    This function draws scores comparison graph for all models.
+    """
+
+    result_path = join(getenv('PROJECT_RESULTS_DIR'),'weighted_f1_scores.json')
+    real_scores = loadJson(result_path)
+
+    drawScoresBarChart('Weighted F1', real_scores, join(getenv('PROJECT_RESULTS_DIR'), 'real_scores.png'),show)
+
+    return real_scores
