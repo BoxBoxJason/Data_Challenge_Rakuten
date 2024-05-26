@@ -2,7 +2,7 @@ import logging
 from os import getenv, makedirs
 from os.path import join
 from sklearn.naive_bayes import ComplementNB, MultinomialNB, GaussianNB, BernoulliNB
-from models.models import trainAndTestModel, optimizeModelParameters
+from models.models import trainAndTestModel, optimizeModelParameters, drawGraphs
 
 #Naive Bayes Classifer Gaussian directory results path
 __NAIVE_BAYES_GAUSSIAN_RESULTS_PATH = join(getenv('PROJECT_RESULTS_DIR'), 'gaussianNB')
@@ -124,6 +124,12 @@ def trainAndTestComplementNaiveBayesClassifier(X_train, y_train, X_test):
 
     return trainAndTestModel(ComplementNB, processed_X_train, y_train, processed_X_test, __NAIVE_BAYES_COMPLEMENT_RESULTS_PATH)
 
+def drawGraphsComplementNaiveBayes():
+    """
+    @brief Draws graphs for the Complement Naive Bayes Classifier model.
+    """
+    drawGraphs('Complement Naive Bayes Classifier', __NAIVE_BAYES_COMPLEMENT_RESULTS_PATH, 'norm', 'alpha')
+
 
 def preProcessDatasetMultinomial(dataset):
     """
@@ -177,6 +183,11 @@ def trainAndTestMultinomialNaiveBayesClassifier(X_train, y_train, X_test):
 
     return trainAndTestModel(MultinomialNB, processed_X_train, y_train, processed_X_test, __NAIVE_BAYES_MULTINOMIAL_RESULTS_PATH)
 
+def drawGraphsMultinomialNaiveBayes():
+    """
+    @brief Draws graphs for the Multinomial Naive Bayes Classifier model.
+    """
+    drawGraphs('Multinomial Naive Bayes Classifier', __NAIVE_BAYES_MULTINOMIAL_RESULTS_PATH, 'fit_prior', 'alpha')
 
 def preProcessDatasetBernoulli(dataset):
     """
@@ -230,3 +241,9 @@ def trainAndTestBernoulliNaiveBayesClassifier(X_train, y_train, X_test):
     processed_X_test = preProcessDatasetBernoulli(X_test)
 
     return trainAndTestModel(BernoulliNB, processed_X_train, y_train, processed_X_test, __NAIVE_BAYES_BERNOULLI_RESULTS_PATH)
+
+def drawGraphsBernoulliNaiveBayes():
+    """
+    @brief Draws graphs for the Bernoulli Naive Bayes Classifier model.
+    """
+    drawGraphs('Bernoulli Naive Bayes Classifier', __NAIVE_BAYES_BERNOULLI_RESULTS_PATH, 'fit_prior', 'alpha', 'binarize')

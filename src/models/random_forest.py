@@ -71,4 +71,4 @@ def drawGraphsRandomForest():
     Display mean test scores for each hyperparameter which are max_depth, max_features and n_estimators.
     """
     logging.debug("Drawing Random Forest Classifier graphs")
-    drawGraphs('Random Forest Classifier', __RANDOM_FOREST_RESULTS_PATH)
+    drawGraphs('Random Forest Classifier', __RANDOM_FOREST_RESULTS_PATH, 'max_features', 'n_estimators', 'max_depth')

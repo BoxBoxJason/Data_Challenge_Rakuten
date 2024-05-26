@@ -2,7 +2,7 @@ import logging
 from os import makedirs, getenv
 from os.path import join
 from sklearn.ensemble import BaggingClassifier
-from models.models import trainAndTestModel, optimizeModelParameters
+from models.models import trainAndTestModel, optimizeModelParameters, drawGraphs
 
 # Bagging Classifier results path
 __BAGGING_RESULTS_PATH = join(getenv('PROJECT_RESULTS_DIR'), 'bagging')
@@ -56,3 +56,11 @@ def trainAndTestBaggingClassifier(X_train, y_train, X_test):
     """
     logging.debug("Training Bagging Classifier")
     return trainAndTestModel(BaggingClassifier, X_train, y_train, X_test, __BAGGING_RESULTS_PATH)
+
+def drawGraphsBagging():
+    """
+    @brief Draws graphs for the Bagging Classifier.
+
+    This function draws graphs for the Bagging Classifier.
+    """
+    drawGraphs('Bagging Classifier', __BAGGING_RESULTS_PATH)

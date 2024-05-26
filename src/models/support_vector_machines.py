@@ -2,7 +2,7 @@ import logging
 from os import getenv, makedirs
 from os.path import join
 from sklearn.svm import SVC, LinearSVC, NuSVC
-from models.models import trainAndTestModel, optimizeModelParameters
+from models.models import trainAndTestModel, optimizeModelParameters, drawGraphs
 
 # SVC Classifier results directory path
 __SVC_RESULTS_PATH = join(getenv('PROJECT_RESULTS_DIR'), 'svc')
@@ -71,6 +71,12 @@ def trainAndTestSVC(X_train, y_train, X_test):
 
     return trainAndTestModel(SVC, processed_X_train, y_train, processed_X_test, __SVC_RESULTS_PATH)
 
+def drawGraphsSVC():
+    """
+    @brief Draws graphs for the SVC Classifier model.
+    """
+    drawGraphs('SVC Classifier', __SVC_RESULTS_PATH, 'kernel', 'C', 'gamma', 'degree')
+
 
 def preProcessDatasetLinearSVC(dataset):
     """
@@ -127,6 +133,12 @@ def trainAndTestLinearSVC(X_train, y_train, X_test):
 
     return trainAndTestModel(LinearSVC, processed_X_train, y_train, processed_X_test, __LINEAR_SVC_RESULTS_PATH)
 
+def drawGraphsLinearSVC():
+    """
+    @brief Draws graphs for the Linear SVC Classifier model.
+    """
+    drawGraphs('Linear SVC Classifier', __LINEAR_SVC_RESULTS_PATH, 'loss', 'penalty', 'multi_class')
+
 
 def preProcessDatasetNuSVC(dataset):
     """
@@ -181,3 +193,10 @@ def trainAndTestNuSVC(X_train, y_train, X_test):
     processed_X_test = preProcessDatasetNuSVC(X_test)
 
     return trainAndTestModel(NuSVC, processed_X_train, y_train, processed_X_test, __NU_SVC_RESULTS_PATH)
+
+def drawGraphsNuSVC():
+    """
+    @brief Draws graphs for the NuSVC Classifier model.
+    """
+    drawGraphs('NuSVC Classifier', __NU_SVC_RESULTS_PATH, 'kernel', 'gamma', 'nu', 'degree')
+    

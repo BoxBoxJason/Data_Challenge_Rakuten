@@ -2,7 +2,7 @@ import logging
 from os.path import join
 from os import getenv, makedirs
 from sklearn.neighbors import KNeighborsClassifier
-from models.models import trainAndTestModel, optimizeModelParameters
+from models.models import trainAndTestModel, optimizeModelParameters, drawGraphs
 
 # K Neighbors Classifier results path
 __K_NEIGHBORS_RESULTS_PATH = join(getenv('PROJECT_RESULTS_DIR'), 'k_nearest_neighbors')
@@ -61,3 +61,11 @@ def trainAndTestKNeighborsClassifier(X_train, y_train, X_test):
     processed_X_train = preProcessDataset(X_train)
     processed_X_test = preProcessDataset(X_test)
     return trainAndTestModel(KNeighborsClassifier, processed_X_train, y_train, processed_X_test, __K_NEIGHBORS_RESULTS_PATH)
+
+def drawGraphsKNeighbors():
+    """
+    @brief Draws graphs for the K Neighbors Classifier model.
+
+    This function draws graphs for the K Neighbors Classifier model.
+    """
+    drawGraphs('K-Nearest Neighbors Classifier', __K_NEIGHBORS_RESULTS_PATH, 'algorithm', 'n_neighbors', 'weights', 'leaf_size', 'p')

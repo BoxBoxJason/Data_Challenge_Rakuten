@@ -11,17 +11,17 @@ from utils.logger import setupCustomLogger
 from data.prepare import prepareDatasets
 from models.random_forest import optimizeRandomForestClassifierParameters, trainAndTestRandomForestClassifier, drawGraphsRandomForest
 from models.gradient_boosting import optimizeGradientBoostingClassifierParameters, optimizeHistGradientBoostingClassifierParameters, \
-    trainAndTestGradientBoostingClassifier, trainAndTestHistGradientBoostingClassifier
-from models.k_nearest_neighbors import optimizeKNeighborsClassifierParameters, trainAndTestKNeighborsClassifier
+    trainAndTestGradientBoostingClassifier, trainAndTestHistGradientBoostingClassifier, drawGraphsGradientBoosting
+from models.k_nearest_neighbors import optimizeKNeighborsClassifierParameters, trainAndTestKNeighborsClassifier, drawGraphsKNeighbors
 from models.bayesian import optimizeComplementNaiveBayesClassifierParameters, optimizeMultinomialNaiveBayesClassifierParameters, \
     optimizeNaiveBayesGaussianClassifierParameters, optimizeBernoulliNaiveBayesClassifierParameters, \
     trainAndTestNaiveBayesGaussianClassifier, trainAndTestMultinomialNaiveBayesClassifier, trainAndTestComplementNaiveBayesClassifier, \
-    trainAndTestBernoulliNaiveBayesClassifier
+    trainAndTestBernoulliNaiveBayesClassifier, drawGraphsMultinomialNaiveBayes, drawGraphsComplementNaiveBayes, drawGraphsBernoulliNaiveBayes
 from models.support_vector_machines import optimizeSVCParameters, optimizeLinearSVCParameters, optimizeNuSVCParameters, \
-    trainAndTestSVC, trainAndTestLinearSVC, trainAndTestNuSVC
-from models.extra_trees import optimizeExtraTreesClassifierParameters, trainAndTestExtraTreesClassifier
-from models.adaboost import optimizeAdaBoostClassifierParameters, trainAndTestAdaBoostClassifier
-from models.bagging import optimizeBaggingClassifierParameters, trainAndTestBaggingClassifier
+    trainAndTestSVC, trainAndTestLinearSVC, trainAndTestNuSVC, drawGraphsSVC, drawGraphsLinearSVC, drawGraphsNuSVC
+from models.extra_trees import optimizeExtraTreesClassifierParameters, trainAndTestExtraTreesClassifier, drawGraphsExtraTrees
+from models.adaboost import optimizeAdaBoostClassifierParameters, trainAndTestAdaBoostClassifier, drawGraphsAdaBoost
+from models.bagging import optimizeBaggingClassifierParameters, trainAndTestBaggingClassifier, drawGraphsBagging
 
 setupCustomLogger('DEBUG')
 X_train, X_test, y_train = prepareDatasets(os.environ['PROJECT_RAW_DATA_DIR'])
@@ -112,3 +112,39 @@ if 'predict_bagging' in sys.argv:
 
 if 'graph_rf' in sys.argv:
     drawGraphsRandomForest()
+
+if 'graph_gb' in sys.argv:
+    drawGraphsGradientBoosting()
+
+if 'graph_knn' in sys.argv:
+    drawGraphsKNeighbors()
+
+if 'graph_mnb' in sys.argv:
+    drawGraphsMultinomialNaiveBayes()
+
+if 'graph_cnb' in sys.argv:
+    drawGraphsComplementNaiveBayes()
+
+if 'graph_bnb' in sys.argv:
+    drawGraphsBernoulliNaiveBayes()
+
+if 'graph_svc' in sys.argv:
+    drawGraphsSVC()
+
+if 'graph_linear_svc' in sys.argv:
+    drawGraphsLinearSVC()
+
+if 'graph_nu_svc' in sys.argv:
+    drawGraphsNuSVC()
+
+if 'graph_et' in sys.argv:
+    drawGraphsExtraTrees()
+
+if 'graph_ab' in sys.argv:
+    drawGraphsAdaBoost()
+
+if 'graph_bagging' in sys.argv:
+    drawGraphsBagging()
+
+
+

@@ -117,7 +117,7 @@ def getModelBestParams(model_results_path):
         logging.error(f"Best parameters file not found at {best_params_path}, using default parameters.")
     return best_params
 
-def drawGraphs(model_name, results_path):
+def drawGraphs(model_name, results_path, x_feature, hue_feature=None, col_feature=None, row_feature=None, style_feature=None):
     """
     @brief Draws graphs for the given results.
 
@@ -140,6 +140,6 @@ def drawGraphs(model_name, results_path):
     df.fillna(0, inplace=True)
 
     seaborn.set_theme(style="whitegrid")
-    graph = seaborn.catplot(data=df, x='max_features', y='mean_test_score', hue='max_depth', palette='mako',col='n_estimators', kind='bar')
+    graph = seaborn.catplot(data=df, x=x_feature, y='mean_test_score', hue=hue_feature, palette='mako',col=col_feature, kind='bar')
     graph.savefig(join(results_path, f'{model_name}_mean_test_scores.png'))
 

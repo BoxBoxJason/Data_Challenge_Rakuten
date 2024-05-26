@@ -2,7 +2,7 @@ import logging
 from os import makedirs, getenv
 from os.path import join
 from sklearn.ensemble import ExtraTreesClassifier
-from models.models import trainAndTestModel, optimizeModelParameters
+from models.models import trainAndTestModel, optimizeModelParameters, drawGraphs
 
 # Extra Trees Classifier results path
 __EXTRA_TREES_RESULTS_PATH = join(getenv('PROJECT_RESULTS_DIR'), 'extra_trees')
@@ -55,3 +55,9 @@ def trainAndTestExtraTreesClassifier(X_train, y_train, X_test):
     """
     logging.debug("Training Extra Trees Classifier")
     return trainAndTestModel(ExtraTreesClassifier, X_train, y_train, X_test)
+
+def drawGraphsExtraTrees():
+    """
+    @brief Draws graphs for the Extra Trees Classifier.
+    """
+    drawGraphs('Extra Trees Classifier', __EXTRA_TREES_RESULTS_PATH)

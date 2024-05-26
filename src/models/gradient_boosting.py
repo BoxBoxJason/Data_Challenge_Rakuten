@@ -2,7 +2,7 @@ import logging
 from os.path import join
 from os import getenv, makedirs
 from sklearn.ensemble import GradientBoostingClassifier, HistGradientBoostingClassifier
-from models.models import trainAndTestModel, optimizeModelParameters
+from models.models import trainAndTestModel, optimizeModelParameters, drawGraphs
 
 # Gradient Boosting Classifier results path
 __GRADIENT_BOOSTING_RESULTS_PATH = join(getenv('PROJECT_RESULTS_DIR'), 'gradient_boosting')
@@ -113,4 +113,10 @@ def trainAndTestHistGradientBoostingClassifier(X_train, Y_train, X_test):
 
     return trainAndTestModel(HistGradientBoostingClassifier, processed_X_train, Y_train, processed_X_test, __HIST_GRADIENT_BOOSTING_RESULTS_PATH)
 
+def drawGraphsGradientBoosting():
+    """
+    @brief Draws graphs for Gradient Boosting Classifier.
 
+    This function draws graphs for Gradient Boosting Classifier.
+    """
+    drawGraphs('Gradient Boosting Classifier', __GRADIENT_BOOSTING_RESULTS_PATH)

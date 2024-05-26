@@ -2,7 +2,7 @@ import logging
 from os import makedirs, getenv
 from os.path import join
 from sklearn.ensemble import AdaBoostClassifier
-from models.models import trainAndTestModel, optimizeModelParameters
+from models.models import trainAndTestModel, optimizeModelParameters, drawGraphs
 
 # AdaBoost Classifier results path
 __ADABOOST_RESULTS_PATH = join(getenv('PROJECT_RESULTS_DIR'), 'adaboost')
@@ -56,3 +56,11 @@ def trainAndTestAdaBoostClassifier(X_train, y_train, X_test):
     """
     logging.debug("Training AdaBoost Classifier")
     return trainAndTestModel(AdaBoostClassifier, X_train, y_train, X_test, __ADABOOST_RESULTS_PATH)
+
+def drawGraphsAdaBoost():
+    """
+    @brief Draws graphs for AdaBoost Classifier.
+
+    This function draws graphs for AdaBoost Classifier.
+    """
+    drawGraphs('AdaBoost Classifier', __ADABOOST_RESULTS_PATH, 'algorithm', 'n_estimators', 'learning_rate')
