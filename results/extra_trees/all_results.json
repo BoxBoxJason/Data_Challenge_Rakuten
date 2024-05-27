@@ -1,0 +1,11 @@
+{
+    "params": [
+        {
+            "n_estimators": 300
+        }
+    ],
+    "mean_test_score": [
+        0.7922019136203022
+    ]
+
+}

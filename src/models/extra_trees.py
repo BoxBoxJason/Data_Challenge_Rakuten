@@ -32,7 +32,7 @@ def optimizeExtraTreesClassifierParameters(X_train, y_train):
     @return The trained Extra Trees Classifier model.
     """
     param_grid = {
-        'n_estimators': [100, 200, 300],
+        'n_estimators': [100,200,300],
         'max_features': ['auto', 'sqrt', 'log2']
     }
 
@@ -55,6 +55,7 @@ def trainAndTestExtraTreesClassifier(X_train, y_train, X_test):
     """
     logging.debug("Training Extra Trees Classifier")
     return trainAndTestModel(ExtraTreesClassifier, X_train, y_train, X_test)
+
 
 def drawGraphsExtraTrees():
     """

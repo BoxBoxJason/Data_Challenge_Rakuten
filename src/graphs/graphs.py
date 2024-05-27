@@ -11,7 +11,7 @@ def drawScoresBarChart(score_type, scores_dicts, save_path=None, show=False):
     """
     model_names = []
     scores = []
-    for model_name,score in scores_dicts.items():
+    for model_name,score in sorted(scores_dicts.items(), key=lambda x: x[1]):
         model_names.append(model_name)
         scores.append(score)
     x = range(len(scores))
