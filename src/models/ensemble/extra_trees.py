@@ -2,22 +2,12 @@ import logging
 from os import makedirs, getenv
 from os.path import join
 from sklearn.ensemble import ExtraTreesClassifier
-from models.models import trainAndTestModel, optimizeModelParameters, drawGraphs
+from models.models import trainAndTestModel, optimizeModelParameters
 
 # Extra Trees Classifier results path
 __EXTRA_TREES_RESULTS_PATH = join(getenv('PROJECT_RESULTS_DIR'), 'extra_trees')
 
 makedirs(__EXTRA_TREES_RESULTS_PATH, exist_ok=True)
-
-def preProcessDataset(dataset):
-    """
-    @brief Preprocesses the dataset.
-
-    @param dataset The dataset to be preprocessed.
-    @return The preprocessed dataset.
-    """
-    logging.debug("Preprocessing dataset for Extra Trees Classifier")
-    return dataset
 
 
 def optimizeExtraTreesClassifierParameters(X_train, y_train):
@@ -46,9 +36,7 @@ def optimizeExtraTreesClassifierParameters(X_train, y_train):
         },
     ]
 
-    processed_X_train = preProcessDataset(X_train)
-
-    return optimizeModelParameters(ExtraTreesClassifier, 'Extra Trees Classifier', param_grid, __EXTRA_TREES_RESULTS_PATH, processed_X_train, y_train)
+    return optimizeModelParameters(ExtraTreesClassifier, 'Extra Trees Classifier', param_grid, __EXTRA_TREES_RESULTS_PATH, X_train, y_train)
 
 
 def trainAndTestExtraTreesClassifier(X_train, y_train, X_test):
@@ -64,13 +52,4 @@ def trainAndTestExtraTreesClassifier(X_train, y_train, X_test):
     @return The trained Extra Trees Classifier and the predictions.
     """
     logging.debug("Training Extra Trees Classifier")
-    processed_X_train = preProcessDataset(X_train)
-    processed_X_test = preProcessDataset(X_test)
-    return trainAndTestModel(ExtraTreesClassifier, processed_X_train, y_train, processed_X_test, __EXTRA_TREES_RESULTS_PATH)
-
-
-def drawGraphsExtraTrees():
-    """
-    @brief Draws graphs for the Extra Trees Classifier.
-    """
-    drawGraphs('Extra Trees Classifier', __EXTRA_TREES_RESULTS_PATH)
+    return trainAndTestModel(ExtraTreesClassifier, X_train, y_train, X_test, __EXTRA_TREES_RESULTS_PATH)

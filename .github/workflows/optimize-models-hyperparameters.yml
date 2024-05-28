@@ -64,35 +64,6 @@ jobs:
           name: k_nearest_neighbors
           path: ./results/k_nearest_neighbors
 
-  optimize-naive-bayes-gaussian:
-    runs-on: ubuntu-latest
-    timeout-minutes: 4320
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Python 3.12
-        uses: actions/setup-python@v4
-        with:
-          python-version: 3.12
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          python -m spacy download fr_core_news_sm
-
-      - name: Run Python script
-        run: |
-          python ./src/__main__.py optimize_gnb
-
-      - name: Upload result
-        uses: actions/upload-artifact@v4
-        with:
-          name: gaussianNB
-          path: ./results/gaussianNB
-
   optimize-naive-bayes-multinomial:
     runs-on: ubuntu-latest
     timeout-minutes: 4320
@@ -208,35 +179,6 @@ jobs:
         with:
           name: gradient_boosting
           path: ./results/gradient_boosting
-
-  optimize-hist-gradient-boosting:
-    runs-on: ubuntu-latest
-    timeout-minutes: 4320
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Python 3.12
-        uses: actions/setup-python@v4
-        with:
-          python-version: 3.12
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          python -m spacy download fr_core_news_sm
-
-      - name: Run Python script
-        run: |
-          python ./src/__main__.py optimize_hgb
-
-      - name: Upload result
-        uses: actions/upload-artifact@v4
-        with:
-          name: hist_gradient_boosting
-          path: ./results/hist_gradient_boosting
 
   optimize-svc:
     runs-on: ubuntu-latest
@@ -411,3 +353,235 @@ jobs:
         with:
           name: extra_trees
           path: ./results/extra_trees
+
+  optimize-decision-tree:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4320
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.12
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          python -m spacy download fr_core_news_sm
+
+      - name: Run Python script
+        run: |
+          python ./src/__main__.py optimize_dt
+
+      - name: Upload result
+        uses: actions/upload-artifact@v4
+        with:
+          name: decision_tree
+          path: ./results/decision_tree
+
+  optimize-lasso:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4320
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.12
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          python -m spacy download fr_core_news_sm
+
+      - name: Run Python script
+        run: |
+          python ./src/__main__.py optimize_lasso
+
+      - name: Upload result
+        uses: actions/upload-artifact@v4
+        with:
+          name: lasso
+          path: ./results/lasso
+
+  optimize-ridge:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4320
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.12
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          python -m spacy download fr_core_news_sm
+
+      - name: Run Python script
+        run: |
+          python ./src/__main__.py optimize_ridge
+
+      - name: Upload result
+        uses: actions/upload-artifact@v4
+        with:
+          name: ridge
+          path: ./results/ridge
+
+  optimize-elastic-net:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4320
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.12
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          python -m spacy download fr_core_news_sm
+
+      - name: Run Python script
+        run: |
+          python ./src/__main__.py optimize_en
+
+      - name: Upload result
+        uses: actions/upload-artifact@v4
+        with:
+          name: elastic_net
+          path: ./results/elastic_net
+
+  optimize-passive-agressive:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4320
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.12
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          python -m spacy download fr_core_news_sm
+
+      - name: Run Python script
+        run: |
+          python ./src/__main__.py optimize_pa
+
+      - name: Upload result
+        uses: actions/upload-artifact@v4
+        with:
+          name: passive_agressive
+          path: ./results/passive_agressive
+
+  optimize-perceptron:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4320
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.12
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          python -m spacy download fr_core_news_sm
+
+      - name: Run Python script
+        run: |
+          python ./src/__main__.py optimize_perceptron
+
+      - name: Upload result
+        uses: actions/upload-artifact@v4
+        with:
+          name: perceptron
+          path: ./results/perceptron
+
+  optimize-sgd:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4320
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.12
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          python -m spacy download fr_core_news_sm
+
+      - name: Run Python script
+        run: |
+          python ./src/__main__.py optimize_sgd
+
+      - name: Upload result
+        uses: actions/upload-artifact@v4
+        with:
+          name: sgd
+          path: ./results/sgd
+
+  optimize-logistic-regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4320
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.12
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          python -m spacy download fr_core_news_sm
+
+      - name: Run Python script
+        run: |
+          python ./src/__main__.py optimize_lr
+
+      - name: Upload result
+        uses: actions/upload-artifact@v4
+        with:
+          name: logistic_regression
+          path: ./results/logistic_regression

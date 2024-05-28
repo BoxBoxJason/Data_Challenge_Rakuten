@@ -2,24 +2,12 @@ import logging
 from os.path import join
 from os import getenv, makedirs
 from sklearn.ensemble import RandomForestClassifier
-from models.models import trainAndTestModel, optimizeModelParameters, drawGraphs
+from models.models import trainAndTestModel, optimizeModelParameters
 
 # Random Forest Classifier results path
 __RANDOM_FOREST_RESULTS_PATH = join(getenv('PROJECT_RESULTS_DIR'), 'random_forest')
 
 makedirs(__RANDOM_FOREST_RESULTS_PATH, exist_ok=True)
-
-
-def preProcessDataset(dataset):
-    """
-    @brief Preprocesses the dataset.
-
-
-    @param dataset The dataset to be preprocessed.
-    @return The preprocessed dataset.
-    """
-    logging.debug("Preprocessing dataset for Random Forest Classifier")
-    return dataset
 
 
 def optimizeRandomForestClassifierParameters(X_train, y_train):
@@ -39,9 +27,7 @@ def optimizeRandomForestClassifierParameters(X_train, y_train):
         'max_features': ['auto', 'sqrt', 'log2']
     }
 
-    processed_X_train = preProcessDataset(X_train)
-
-    return optimizeModelParameters(RandomForestClassifier,'Random Forest Classifier', param_grid, __RANDOM_FOREST_RESULTS_PATH,processed_X_train, y_train)
+    return optimizeModelParameters(RandomForestClassifier,'Random Forest Classifier', param_grid, __RANDOM_FOREST_RESULTS_PATH,X_train, y_train)
 
 
 def trainAndTestRandomForestClassifier(X_train, y_train, X_test):
@@ -58,17 +44,4 @@ def trainAndTestRandomForestClassifier(X_train, y_train, X_test):
     """
     logging.debug("Training Random Forest Classifier")
 
-    processed_X_train = preProcessDataset(X_train)
-    processed_X_test = preProcessDataset(X_test)
-
-    return trainAndTestModel(RandomForestClassifier, processed_X_train, y_train, processed_X_test, __RANDOM_FOREST_RESULTS_PATH)
-
-def drawGraphsRandomForest():
-    """
-    @brief Draws graphs for the Random Forest Classifier results.
-
-    This function draws graphs for the Random Forest Classifier results.
-    Display mean test scores for each hyperparameter which are max_depth, max_features and n_estimators.
-    """
-    logging.debug("Drawing Random Forest Classifier graphs")
-    drawGraphs('Random Forest Classifier', __RANDOM_FOREST_RESULTS_PATH, 'max_features', 'n_estimators', 'max_depth')
+    return trainAndTestModel(RandomForestClassifier, X_train, y_train, X_test, __RANDOM_FOREST_RESULTS_PATH)

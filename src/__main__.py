@@ -10,19 +10,29 @@ os.environ['PROJECT_RESULTS_DIR'] = os.path.join(os.environ['PROJECT_ROOT_DIR'],
 from utils.logger import setupCustomLogger
 from data.prepare import prepareDatasets
 from models.models import drawValidationScores, drawRealScores
-from models.random_forest import optimizeRandomForestClassifierParameters, trainAndTestRandomForestClassifier, drawGraphsRandomForest
-from models.gradient_boosting import optimizeGradientBoostingClassifierParameters, optimizeHistGradientBoostingClassifierParameters, \
-    trainAndTestGradientBoostingClassifier, trainAndTestHistGradientBoostingClassifier, drawGraphsGradientBoosting
-from models.k_nearest_neighbors import optimizeKNeighborsClassifierParameters, trainAndTestKNeighborsClassifier, drawGraphsKNeighbors
-from models.bayesian import optimizeComplementNaiveBayesClassifierParameters, optimizeMultinomialNaiveBayesClassifierParameters, \
-    optimizeNaiveBayesGaussianClassifierParameters, optimizeBernoulliNaiveBayesClassifierParameters, \
-    trainAndTestNaiveBayesGaussianClassifier, trainAndTestMultinomialNaiveBayesClassifier, trainAndTestComplementNaiveBayesClassifier, \
-    trainAndTestBernoulliNaiveBayesClassifier, drawGraphsMultinomialNaiveBayes, drawGraphsComplementNaiveBayes, drawGraphsBernoulliNaiveBayes
-from models.support_vector_machines import optimizeSVCParameters, optimizeLinearSVCParameters, optimizeNuSVCParameters, \
-    trainAndTestSVC, trainAndTestLinearSVC, trainAndTestNuSVC, drawGraphsSVC, drawGraphsLinearSVC, drawGraphsNuSVC
-from models.extra_trees import optimizeExtraTreesClassifierParameters, trainAndTestExtraTreesClassifier, drawGraphsExtraTrees
-from models.adaboost import optimizeAdaBoostClassifierParameters, trainAndTestAdaBoostClassifier, drawGraphsAdaBoost
-from models.bagging import optimizeBaggingClassifierParameters, trainAndTestBaggingClassifier, drawGraphsBagging
+from models.ensemble.random_forest import optimizeRandomForestClassifierParameters, trainAndTestRandomForestClassifier
+from models.ensemble.gradient_boosting import optimizeGradientBoostingClassifierParameters, trainAndTestGradientBoostingClassifier
+from models.ensemble.extra_trees import optimizeExtraTreesClassifierParameters, trainAndTestExtraTreesClassifier
+from models.ensemble.adaboosting import optimizeAdaBoostClassifierParameters, trainAndTestAdaBoostClassifier
+from models.ensemble.bagging import optimizeBaggingClassifierParameters, trainAndTestBaggingClassifier
+from models.neighbors.k_nearest_neighbors import optimizeKNeighborsClassifierParameters, trainAndTestKNeighborsClassifier
+from models.neighbors.radius_neighbors import optimizeRadiusNeighborsClassifierParameters, trainAndTestRadiusNeighborsClassifier
+from models.naive_bayes.multinomial import optimizeMultinomialNaiveBayesClassifierParameters, trainAndTestMultinomialNaiveBayesClassifier
+from models.naive_bayes.complement import optimizeComplementNaiveBayesClassifierParameters, trainAndTestComplementNaiveBayesClassifier
+from models.naive_bayes.bernoulli import optimizeBernoulliNaiveBayesClassifierParameters, trainAndTestBernoulliNaiveBayesClassifier
+from models.svm.svc import optimizeSVCParameters, trainAndTestSVC
+from models.svm.nu_svc import optimizeNuSVCParameters, trainAndTestNuSVC
+from models.svm.linear_svc import optimizeLinearSVCParameters, trainAndTestLinearSVC
+from models.linear.ridge import optimizeRidgeParameters, trainAndTestRidgeModel
+from models.linear.logistic_regression import optimizeLogisticRegressionParameters, trainAndTestLogisticRegression
+from models.linear.sgd import optimizeSGDParameters, trainAndTestSGDModel
+from models.linear.passive_aggressive import optimizePassiveAggressiveParameters, trainAndTestPassiveAggressiveModel
+from models.linear.perceptron import optimizePerceptronParameters, trainAndTestPerceptron
+from models.linear.lasso import optimizeLassoParameters, trainAndTestLasso
+from models.linear.elastic_net import optimizeElasticNetParameters, trainAndTestElasticNet
+from models.tree.decision_tree import optimizeDecisionTreeParameters, trainAndTestDecisionTreeModel
+from models.neural_network.mlp import optimizeMLPClassifierParameters, trainAndTestMLPClassifier
+
 
 setupCustomLogger('DEBUG')
 X_train, X_test, y_train = prepareDatasets(os.environ['PROJECT_RAW_DATA_DIR'])
@@ -33,14 +43,11 @@ if 'optimize_rf' in sys.argv:
 if 'optimize_gb' in sys.argv:
     optimizeGradientBoostingClassifierParameters(X_train, y_train)
 
-if 'optimize_hgb' in sys.argv:
-    optimizeHistGradientBoostingClassifierParameters(X_train, y_train)
-
 if 'optimize_knn' in sys.argv:
     optimizeKNeighborsClassifierParameters(X_train, y_train)
 
-if 'optimize_gnb' in sys.argv:
-    optimizeNaiveBayesGaussianClassifierParameters(X_train, y_train)
+if 'optimize_rn' in sys.argv:
+    optimizeRadiusNeighborsClassifierParameters(X_train, y_train)
 
 if 'optimize_mnb' in sys.argv:
     optimizeMultinomialNaiveBayesClassifierParameters(X_train, y_train)
@@ -69,20 +76,44 @@ if 'optimize_ab' in sys.argv:
 if 'optimize_bagging' in sys.argv:
     optimizeBaggingClassifierParameters(X_train, y_train)
 
+if 'optimize_ridge' in sys.argv:
+    optimizeRidgeParameters(X_train, y_train)
+
+if 'optimize_lr' in sys.argv:
+    optimizeLogisticRegressionParameters(X_train, y_train)
+
+if 'optimize_sgd' in sys.argv:
+    optimizeSGDParameters(X_train, y_train)
+
+if 'optimize_pa' in sys.argv:
+    optimizePassiveAggressiveParameters(X_train, y_train)
+
+if 'optimize_perceptron' in sys.argv:
+    optimizePerceptronParameters(X_train, y_train)
+
+if 'optimize_lasso' in sys.argv:
+    optimizeLassoParameters(X_train, y_train)
+
+if 'optimize_en' in sys.argv:
+    optimizeElasticNetParameters(X_train, y_train)
+
+if 'optimize_dt' in sys.argv:
+    optimizeDecisionTreeParameters(X_train, y_train)
+
+if 'optimize_mlp' in sys.argv:
+    optimizeMLPClassifierParameters(X_train, y_train)
+
 if 'predict_rf' in sys.argv:
     trainAndTestRandomForestClassifier(X_train, y_train, X_test)
 
 if 'predict_gb' in sys.argv:
     trainAndTestGradientBoostingClassifier(X_train, y_train, X_test)
 
-if 'predict_hgb' in sys.argv:
-    trainAndTestHistGradientBoostingClassifier(X_train, y_train, X_test)
-
 if 'predict_knn' in sys.argv:
     trainAndTestKNeighborsClassifier(X_train, y_train, X_test)
 
-if 'predict_gnb' in sys.argv:
-    trainAndTestNaiveBayesGaussianClassifier(X_train, y_train, X_test)
+if 'predict_rn' in sys.argv:
+    trainAndTestRadiusNeighborsClassifier(X_train, y_train, X_test)
 
 if 'predict_mnb' in sys.argv:
     trainAndTestMultinomialNaiveBayesClassifier(X_train, y_train, X_test)
@@ -111,42 +142,29 @@ if 'predict_ab' in sys.argv:
 if 'predict_bagging' in sys.argv:
     trainAndTestBaggingClassifier(X_train, y_train, X_test)
 
-if 'graph_rf' in sys.argv:
-    drawGraphsRandomForest()
+if 'predict_ridge' in sys.argv:
+    trainAndTestRidgeModel(X_train, y_train, X_test)
 
-if 'graph_gb' in sys.argv:
-    drawGraphsGradientBoosting()
+if 'predict_lr' in sys.argv:
+    trainAndTestLogisticRegression(X_train, y_train, X_test)
 
-if 'graph_knn' in sys.argv:
-    drawGraphsKNeighbors()
+if 'predict_sgd' in sys.argv:
+    trainAndTestSGDModel(X_train, y_train, X_test)
 
-if 'graph_mnb' in sys.argv:
-    drawGraphsMultinomialNaiveBayes()
+if 'predict_pa' in sys.argv:
+    trainAndTestPassiveAggressiveModel(X_train, y_train, X_test)
 
-if 'graph_cnb' in sys.argv:
-    drawGraphsComplementNaiveBayes()
+if 'predict_perceptron' in sys.argv:
+    trainAndTestPerceptron(X_train, y_train, X_test)
 
-if 'graph_bnb' in sys.argv:
-    drawGraphsBernoulliNaiveBayes()
+if 'predict_lasso' in sys.argv:
+    trainAndTestLasso(X_train, y_train, X_test)
 
-if 'graph_svc' in sys.argv:
-    drawGraphsSVC()
+if 'predict_en' in sys.argv:
+    trainAndTestElasticNet(X_train, y_train, X_test)
 
-if 'graph_linear_svc' in sys.argv:
-    drawGraphsLinearSVC()
+if 'predict_dt' in sys.argv:
+    trainAndTestDecisionTreeModel(X_train, y_train, X_test)
 
-if 'graph_nu_svc' in sys.argv:
-    drawGraphsNuSVC()
-
-if 'graph_et' in sys.argv:
-    drawGraphsExtraTrees()
-
-if 'graph_ab' in sys.argv:
-    drawGraphsAdaBoost()
-
-if 'graph_bagging' in sys.argv:
-    drawGraphsBagging()
-
-if 'graph_scores' in sys.argv:
-    print('Validation Scores: ', drawValidationScores(False))
-    drawRealScores(True)
+if 'predict_mlp' in sys.argv:
+    trainAndTestMLPClassifier(X_train, y_train, X_test)

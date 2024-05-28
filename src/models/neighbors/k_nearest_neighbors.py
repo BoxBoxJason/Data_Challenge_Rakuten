@@ -2,23 +2,12 @@ import logging
 from os.path import join
 from os import getenv, makedirs
 from sklearn.neighbors import KNeighborsClassifier
-from models.models import trainAndTestModel, optimizeModelParameters, drawGraphs
+from models.models import trainAndTestModel, optimizeModelParameters
 
 # K Neighbors Classifier results path
 __K_NEIGHBORS_RESULTS_PATH = join(getenv('PROJECT_RESULTS_DIR'), 'k_nearest_neighbors')
 
 makedirs(__K_NEIGHBORS_RESULTS_PATH, exist_ok=True)
-
-def preProcessDataset(dataset):
-    """
-    @brief Preprocesses the dataset.
-
-
-    @param dataset The dataset to be preprocessed.
-    @return The preprocessed dataset.
-    """
-    logging.debug("Preprocessing dataset for K Neighbors Classifier")
-    return dataset
 
 
 def optimizeKNeighborsClassifierParameters(X_train, y_train):
@@ -40,9 +29,7 @@ def optimizeKNeighborsClassifierParameters(X_train, y_train):
         'p': [1, 2]
     }
 
-    processed_X_train = preProcessDataset(X_train)
-
-    return optimizeModelParameters(KNeighborsClassifier,'K-Nearest Neighbors Classifier', param_grid,__K_NEIGHBORS_RESULTS_PATH,processed_X_train,y_train)
+    return optimizeModelParameters(KNeighborsClassifier,'K-Nearest Neighbors Classifier', param_grid,__K_NEIGHBORS_RESULTS_PATH,X_train,y_train)
 
 
 def trainAndTestKNeighborsClassifier(X_train, y_train, X_test):
@@ -58,14 +45,4 @@ def trainAndTestKNeighborsClassifier(X_train, y_train, X_test):
     @return The trained K Neighbors Classifier and the predictions.
     """
     logging.debug("Training K Neighbors Classifier")
-    processed_X_train = preProcessDataset(X_train)
-    processed_X_test = preProcessDataset(X_test)
-    return trainAndTestModel(KNeighborsClassifier, processed_X_train, y_train, processed_X_test, __K_NEIGHBORS_RESULTS_PATH)
-
-def drawGraphsKNeighbors():
-    """
-    @brief Draws graphs for the K Neighbors Classifier model.
-
-    This function draws graphs for the K Neighbors Classifier model.
-    """
-    drawGraphs('K-Nearest Neighbors Classifier', __K_NEIGHBORS_RESULTS_PATH, 'algorithm', 'n_neighbors', 'weights', 'leaf_size', 'p')
+    return trainAndTestModel(KNeighborsClassifier, X_train, y_train, X_test, __K_NEIGHBORS_RESULTS_PATH)

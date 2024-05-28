@@ -2,22 +2,12 @@ import logging
 from os import makedirs, getenv
 from os.path import join
 from sklearn.ensemble import BaggingClassifier
-from models.models import trainAndTestModel, optimizeModelParameters, drawGraphs
+from models.models import trainAndTestModel, optimizeModelParameters
 
 # Bagging Classifier results path
 __BAGGING_RESULTS_PATH = join(getenv('PROJECT_RESULTS_DIR'), 'bagging')
 
 makedirs(__BAGGING_RESULTS_PATH, exist_ok=True)
-
-def preProcessDataset(dataset):
-    """
-    @brief Preprocesses the dataset.
-
-    @param dataset The dataset to be preprocessed.
-    @return The preprocessed dataset.
-    """
-    logging.debug("Preprocessing dataset for Bagging Classifier")
-    return dataset
 
 
 def optimizeBaggingClassifierParameters(X_train, y_train):
@@ -36,9 +26,7 @@ def optimizeBaggingClassifierParameters(X_train, y_train):
         'bootstrap_features': [True, False]
     }
 
-    processed_X_train = preProcessDataset(X_train)
-
-    return optimizeModelParameters(BaggingClassifier, 'Bagging Classifier', param_grid, __BAGGING_RESULTS_PATH, processed_X_train, y_train)
+    return optimizeModelParameters(BaggingClassifier, 'Bagging Classifier', param_grid, __BAGGING_RESULTS_PATH, X_train, y_train)
 
 
 def trainAndTestBaggingClassifier(X_train, y_train, X_test):
@@ -55,11 +43,3 @@ def trainAndTestBaggingClassifier(X_train, y_train, X_test):
     """
     logging.debug("Training Bagging Classifier")
     return trainAndTestModel(BaggingClassifier, X_train, y_train, X_test, __BAGGING_RESULTS_PATH)
-
-def drawGraphsBagging():
-    """
-    @brief Draws graphs for the Bagging Classifier.
-
-    This function draws graphs for the Bagging Classifier.
-    """
-    drawGraphs('Bagging Classifier', __BAGGING_RESULTS_PATH)

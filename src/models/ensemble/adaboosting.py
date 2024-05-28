@@ -2,22 +2,12 @@ import logging
 from os import makedirs, getenv
 from os.path import join
 from sklearn.ensemble import AdaBoostClassifier
-from models.models import trainAndTestModel, optimizeModelParameters, drawGraphs
+from models.models import trainAndTestModel, optimizeModelParameters
 
 # AdaBoost Classifier results path
 __ADABOOST_RESULTS_PATH = join(getenv('PROJECT_RESULTS_DIR'), 'adaboost')
 
 makedirs(__ADABOOST_RESULTS_PATH, exist_ok=True)
-
-def preProcessDataset(dataset):
-    """
-    @brief Preprocesses the dataset.
-
-    @param dataset The dataset to be preprocessed.
-    @return The preprocessed dataset.
-    """
-    logging.debug("Preprocessing dataset for AdaBoost Classifier")
-    return dataset
 
 
 def optimizeAdaBoostClassifierParameters(X_train, y_train):
@@ -37,9 +27,7 @@ def optimizeAdaBoostClassifierParameters(X_train, y_train):
         'algorithm': ['SAMME', 'SAMME.R']
     }
 
-    processed_X_train = preProcessDataset(X_train)
-
-    return optimizeModelParameters(AdaBoostClassifier, 'AdaBoost Classifier', param_grid, __ADABOOST_RESULTS_PATH, processed_X_train, y_train)
+    return optimizeModelParameters(AdaBoostClassifier, 'AdaBoost Classifier', param_grid, __ADABOOST_RESULTS_PATH, X_train, y_train)
 
 
 def trainAndTestAdaBoostClassifier(X_train, y_train, X_test):
@@ -56,11 +44,3 @@ def trainAndTestAdaBoostClassifier(X_train, y_train, X_test):
     """
     logging.debug("Training AdaBoost Classifier")
     return trainAndTestModel(AdaBoostClassifier, X_train, y_train, X_test, __ADABOOST_RESULTS_PATH)
-
-def drawGraphsAdaBoost():
-    """
-    @brief Draws graphs for AdaBoost Classifier.
-
-    This function draws graphs for AdaBoost Classifier.
-    """
-    drawGraphs('AdaBoost Classifier', __ADABOOST_RESULTS_PATH, 'algorithm', 'n_estimators', 'learning_rate')
