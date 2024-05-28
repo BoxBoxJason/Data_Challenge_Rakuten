@@ -41,10 +41,30 @@ def optimizeSVCParameters(X_train, y_train):
     @return The trained SVC Classifier model.
     """
     param_grid = param_grid = [
-        {'C': [0.1, 1, 10], 'kernel': ['linear']},
-        {'C': [0.1, 1, 10], 'kernel': ['rbf'], 'gamma': ['scale', 'auto']},
-        {'C': [0.1, 1, 10], 'kernel': ['poly'], 'degree': [2, 3], 'gamma': ['scale', 'auto']},
-        {'C': [0.1, 1, 10], 'kernel': ['sigmoid'], 'gamma': ['scale', 'auto']}
+        {'C': 0.1, 'kernel': 'rbf', 'gamma': 'scale'},
+        {'C': 0.1, 'kernel': 'rbf', 'gamma': 'auto'},
+        {'C': 1, 'kernel': 'rbf', 'gamma': 'scale'},
+        {'C': 1, 'kernel': 'rbf', 'gamma': 'auto'},
+        {'C': 10, 'kernel': 'rbf', 'gamma': 'scale'},
+        {'C': 10, 'kernel': 'rbf', 'gamma': 'auto'},
+        {'C': 0.1, 'kernel': 'poly', 'degree': 2, 'gamma': 'scale'},
+        {'C': 0.1, 'kernel': 'poly', 'degree': 2, 'gamma': 'auto'},
+        {'C': 0.1, 'kernel': 'poly', 'degree': 3, 'gamma': 'scale'},
+        {'C': 0.1, 'kernel': 'poly', 'degree': 3, 'gamma': 'auto'},
+        {'C': 1, 'kernel': 'poly', 'degree': 2, 'gamma': 'scale'},
+        {'C': 1, 'kernel': 'poly', 'degree': 2, 'gamma': 'auto'},
+        {'C': 1, 'kernel': 'poly', 'degree': 3, 'gamma': 'scale'},
+        {'C': 1, 'kernel': 'poly', 'degree': 3, 'gamma': 'auto'},
+        {'C': 10, 'kernel': 'poly', 'degree': 2, 'gamma': 'scale'},
+        {'C': 10, 'kernel': 'poly', 'degree': 2, 'gamma': 'auto'},
+        {'C': 10, 'kernel': 'poly', 'degree': 3, 'gamma': 'scale'},
+        {'C': 10, 'kernel': 'poly', 'degree': 3, 'gamma': 'auto'},
+        {'C': 0.1, 'kernel': 'sigmoid', 'gamma': 'scale'},
+        {'C': 0.1, 'kernel': 'sigmoid', 'gamma': 'auto'},
+        {'C': 1, 'kernel': 'sigmoid', 'gamma': 'scale'},
+        {'C': 1, 'kernel': 'sigmoid', 'gamma': 'auto'},
+        {'C': 10, 'kernel': 'sigmoid', 'gamma': 'scale'},
+        {'C': 10, 'kernel': 'sigmoid', 'gamma': 'auto'}
     ]
 
     processed_X_train = preProcessDatasetSVC(X_train)
@@ -199,4 +219,4 @@ def drawGraphsNuSVC():
     @brief Draws graphs for the NuSVC Classifier model.
     """
     drawGraphs('NuSVC Classifier', __NU_SVC_RESULTS_PATH, 'kernel', 'gamma', 'nu', 'degree')
-    
+

@@ -34,10 +34,24 @@ def optimizeGradientBoostingClassifierParameters(X_train, Y_train):
     @param Y_train The labels for the training dataset.
     @return The optimized Gradient Boosting Classifier.
     """
-    param_grid = {
-        'n_estimators': [100,200,300],
-        'learning_rate': [0.01, 0.1, 1],
-    }
+    param_grid = [
+        {
+            'n_estimators': 300,
+            'learning_rate': 0.1
+        },
+        {
+            'n_estimators': 300,
+            'learning_rate': 0.01
+        },
+        {
+            'n_estimators': 300,
+            'learning_rate': 1
+        },
+        {
+            'n_estimators': 300,
+            'learning_rate': 10
+        }
+    ]
 
     processed_X_train = preProcessDatasetGradientBoosting(X_train)
 

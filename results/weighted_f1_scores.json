@@ -2,5 +2,7 @@
     "k_nearest_neighbors": 0.47771445098907306,
     "mulinomialNB": 0.7714327375589354,
     "nu_svc": 0.8152957337831351,
-    "random_forest": 0.8064254845663599
+    "random_forest": 0.8064254845663599,
+    "linear_svc": 0.8156794803397295,
+    "extra_trees": 0.8037391391793314
 }

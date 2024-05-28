@@ -32,7 +32,6 @@ def optimizeBaggingClassifierParameters(X_train, y_train):
     @return The trained Bagging Classifier model.
     """
     param_grid = {
-        'n_estimators': [None, 50, 100],
         'bootstrap': [True, False],
         'bootstrap_features': [True, False]
     }
