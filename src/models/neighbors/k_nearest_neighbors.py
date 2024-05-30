@@ -44,5 +44,5 @@ def trainAndTestKNeighborsClassifier(X_train, y_train, X_test):
     @param model_params The model parameters.
     @return The trained K Neighbors Classifier and the predictions.
     """
-    logging.debug("Training K Neighbors Classifier")
+    logging.info("Training K Neighbors Classifier")
     return trainAndTestModel(KNeighborsClassifier, X_train, y_train, X_test, __K_NEIGHBORS_RESULTS_PATH)

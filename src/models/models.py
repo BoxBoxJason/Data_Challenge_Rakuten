@@ -5,8 +5,10 @@ from os import listdir, getenv
 from pandas import DataFrame
 from sklearn.model_selection import GridSearchCV, train_test_split
 from sklearn.metrics import f1_score
+import joblib
 from utils.json import saveJson, convertToSerializable, loadJson
-from graphs.graphs import drawScoresBarChart
+from utils.comparison import getSimilarityPercentage
+from graphs.graphs import drawScoresBarChart, drawSimilarityHeatmap
 
 # Best params json file name
 __BEST_PARAM_FILENAME = 'best_params.json'
@@ -14,6 +16,8 @@ __BEST_PARAM_FILENAME = 'best_params.json'
 __ALL_RESULTS_FILENAME = 'all_results.json'
 # Predicted csv file name
 __PREDICTED_CSV_FILENAME = 'predicted_Y_test.csv'
+# Trained model path
+__MODEL_FILENAME = 'trained_model.pkl'
 
 def trainAndTestModel(model_class, processed_X_train, y_train, processed_X_test, results_path=None):
     """
@@ -30,7 +34,7 @@ def trainAndTestModel(model_class, processed_X_train, y_train, processed_X_test,
     @return The trained model and the predictions.
     """
     model_best_params = getModelBestParams(results_path)
-    model = trainClassifier(model_class, model_best_params, processed_X_train, y_train)
+    model = trainClassifier(model_class, model_best_params, processed_X_train, y_train,results_path)
     return model, predictTestDataset(model, processed_X_test, results_path)
 
 
@@ -61,7 +65,7 @@ def predictTestDataset(model, processed_X_test, results_path=None):
     return prediction
 
 
-def trainClassifier(model_class, model_params, processed_X_train, y_train):
+def trainClassifier(model_class, model_params, processed_X_train, y_train, results_path=None):
     """
     @brief Trains a classifier model on the training data.
 
@@ -78,6 +82,10 @@ def trainClassifier(model_class, model_params, processed_X_train, y_train):
         model_params.setdefault('n_jobs', -1)
     model = model_class(**model_params)
     model.fit(processed_X_train, y_train)
+    if results_path:
+        logging.info(f"Saving trained model at {join(results_path, __MODEL_FILENAME)}")
+        joblib.dump(model, join(results_path, __MODEL_FILENAME))
+
     return model
 
 
@@ -202,10 +210,36 @@ def drawRealScores(show=True):
 
     This function draws scores comparison graph for all models.
     """
-
     result_path = join(getenv('PROJECT_RESULTS_DIR'),'weighted_f1_scores.json')
     real_scores = loadJson(result_path)
 
     drawScoresBarChart('Weighted F1', real_scores, join(getenv('PROJECT_RESULTS_DIR'), 'real_scores.png'),show)
 
     return real_scores
+
+
+def drawPredictionsSimilarity(show=True):
+    """
+    @brief Draws predictions similarity heatmap.
+
+    This function draws predictions similarity heatmap.
+    """
+    result_path = getenv('PROJECT_RESULTS_DIR')
+    similarity_matrix = []
+
+    models_names = listdir(result_path)
+    valid_model_names = []
+    for model_name in models_names:
+        model_results_path = join(result_path, model_name)
+        if isdir(model_results_path):
+            valid_model_names.append(model_name)
+            similarities = []
+            model_csv_path = join(model_results_path, __PREDICTED_CSV_FILENAME)
+            for other_model_name in models_names:
+                other_model_results_path = join(result_path, other_model_name)
+                if isdir(other_model_results_path):
+                    other_model_csv_path = join(other_model_results_path, __PREDICTED_CSV_FILENAME)
+                    similarities.append(getSimilarityPercentage(model_csv_path, other_model_csv_path))
+            similarity_matrix.append(similarities)
+
+    drawSimilarityHeatmap(similarity_matrix, valid_model_names,join(result_path,'similarity_heatmap.png'), show)

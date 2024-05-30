@@ -51,5 +51,5 @@ def trainAndTestExtraTreesClassifier(X_train, y_train, X_test):
     @param model_params The model parameters.
     @return The trained Extra Trees Classifier and the predictions.
     """
-    logging.debug("Training Extra Trees Classifier")
+    logging.info("Training Extra Trees Classifier")
     return trainAndTestModel(ExtraTreesClassifier, X_train, y_train, X_test, __EXTRA_TREES_RESULTS_PATH)

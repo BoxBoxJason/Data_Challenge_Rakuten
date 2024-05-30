@@ -44,5 +44,5 @@ def trainAndTestPerceptron(X_train, y_train, X_test):
     @param model_params The model parameters.
     @return The trained Perceptron and the predictions.
     """
-    logging.debug("Training Perceptron")
+    logging.info("Training Perceptron")
     return trainAndTestModel(Perceptron, X_train, y_train, X_test, __PERCEPTRON_RESULTS_PATH)

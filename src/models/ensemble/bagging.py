@@ -41,5 +41,5 @@ def trainAndTestBaggingClassifier(X_train, y_train, X_test):
     @param model_params The model parameters.
     @return The trained Bagging Classifier and the predictions.
     """
-    logging.debug("Training Bagging Classifier")
+    logging.info("Training Bagging Classifier")
     return trainAndTestModel(BaggingClassifier, X_train, y_train, X_test, __BAGGING_RESULTS_PATH)

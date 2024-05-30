@@ -44,5 +44,5 @@ def trainAndTestLinearSVC(X_train, y_train, X_test):
     @param model_params The model parameters.
     @return The trained Linear SVC Classifier and the predictions.
     """
-    logging.debug("Training Linear SVC model")
+    logging.info("Training Linear SVC model")
     return trainAndTestModel(LinearSVC, X_train, y_train, X_test, __LINEAR_SVC_RESULTS_PATH)

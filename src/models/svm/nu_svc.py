@@ -43,5 +43,5 @@ def trainAndTestNuSVC(X_train, y_train, X_test):
     @param model_params The model parameters.
     @return The trained NuSVC Classifier and the predictions.
     """
-    logging.debug("Training NuSVC model")
+    logging.info("Training NuSVC model")
     return trainAndTestModel(NuSVC, X_train, y_train, X_test, __NU_SVC_RESULTS_PATH)

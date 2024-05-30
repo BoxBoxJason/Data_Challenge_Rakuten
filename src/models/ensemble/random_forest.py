@@ -42,6 +42,6 @@ def trainAndTestRandomForestClassifier(X_train, y_train, X_test):
     @param model_params The model parameters.
     @return The trained Random Forest Classifier and the predictions.
     """
-    logging.debug("Training Random Forest Classifier")
+    logging.info("Training Random Forest Classifier")
 
     return trainAndTestModel(RandomForestClassifier, X_train, y_train, X_test, __RANDOM_FOREST_RESULTS_PATH)

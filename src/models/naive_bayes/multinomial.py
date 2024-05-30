@@ -40,5 +40,5 @@ def trainAndTestMultinomialNaiveBayesClassifier(X_train, y_train, X_test):
     @param best_params The best hyperparameters for the Multinomial Naive Bayes Classifier.
     @return The trained Multinomial Naive Bayes Classifier model.
     """
-    logging.debug("Training Multinomial Naive Bayes Classifier model")
+    logging.info("Training Multinomial Naive Bayes Classifier model")
     return trainAndTestModel(MultinomialNB, X_train, y_train, X_test, __NAIVE_BAYES_MULTINOMIAL_RESULTS_PATH)

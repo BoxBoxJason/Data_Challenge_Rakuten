@@ -42,5 +42,5 @@ def trainAndTestAdaBoostClassifier(X_train, y_train, X_test):
     @param model_params The model parameters.
     @return The trained AdaBoost Classifier and the predictions.
     """
-    logging.debug("Training AdaBoost Classifier")
+    logging.info("Training AdaBoost Classifier")
     return trainAndTestModel(AdaBoostClassifier, X_train, y_train, X_test, __ADABOOST_RESULTS_PATH)

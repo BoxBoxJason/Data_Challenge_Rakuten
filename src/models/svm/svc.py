@@ -63,5 +63,5 @@ def trainAndTestSVC(X_train, y_train, X_test):
     @param model_params The model parameters.
     @return The trained SVC Classifier and the predictions.
     """
-    logging.debug("Training SVC model")
+    logging.info("Training SVC model")
     return trainAndTestModel(SVC, X_train, y_train, X_test, __SVC_RESULTS_PATH)

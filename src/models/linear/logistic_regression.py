@@ -44,5 +44,5 @@ def trainAndTestLogisticRegression(X_train, y_train, X_test):
     @param model_params The model parameters.
     @return The trained Logistic Regression and the predictions.
     """
-    logging.debug("Training Logistic Regression")
+    logging.info("Training Logistic Regression")
     return trainAndTestModel(LogisticRegression, X_train, y_train, X_test, __LOGISTIC_RESULTS_PATH)

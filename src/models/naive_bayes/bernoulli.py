@@ -41,5 +41,5 @@ def trainAndTestBernoulliNaiveBayesClassifier(X_train, y_train, X_test):
     @param best_params The best hyperparameters for the Bernoulli Naive Bayes Classifier.
     @return The trained Bernoulli Naive Bayes Classifier model.
     """
-    logging.debug("Training Bernoulli Naive Bayes Classifier model")
+    logging.info("Training Bernoulli Naive Bayes Classifier model")
     return trainAndTestModel(BernoulliNB, X_train, y_train, X_test, __NAIVE_BAYES_BERNOULLI_RESULTS_PATH)

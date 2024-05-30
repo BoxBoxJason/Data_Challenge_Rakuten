@@ -52,5 +52,5 @@ def trainAndTestGradientBoostingClassifier(X_train, Y_train, X_test):
     @param model_params The model parameters.
     @return The trained Gradient Boosting Classifier and the predictions.
     """
-    logging.debug("Training Gradient Boosting Classifier")
+    logging.info("Training Gradient Boosting Classifier")
     return trainAndTestModel(GradientBoostingClassifier, X_train, Y_train, X_test, __GRADIENT_BOOSTING_RESULTS_PATH)

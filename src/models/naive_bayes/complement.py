@@ -40,5 +40,5 @@ def trainAndTestComplementNaiveBayesClassifier(X_train, y_train, X_test):
     @param best_params The best hyperparameters for the Complement Naive Bayes Classifier.
     @return The trained Complement Naive Bayes Classifier model.
     """
-    logging.debug("Training Complement Naive Bayes Classifier model")
+    logging.info("Training Complement Naive Bayes Classifier model")
     return trainAndTestModel(ComplementNB, X_train, y_train, X_test, __NAIVE_BAYES_COMPLEMENT_RESULTS_PATH)

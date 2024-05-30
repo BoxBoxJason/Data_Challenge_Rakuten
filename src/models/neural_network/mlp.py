@@ -40,5 +40,5 @@ def trainAndTestMLPClassifier(X_train, y_train, X_test):
     @param model_params The model parameters.
     @return The trained MLP Classifier and the predictions.
     """
-    logging.debug("Training MLP Classifier")
+    logging.info("Training MLP Classifier")
     return trainAndTestModel(MLPClassifier, X_train, y_train, X_test, __MLP_RESULTS_PATH)

@@ -1,0 +1,7 @@
+{
+    "C": 10.0,
+    "multi_class": "ovr",
+    "penalty": "l2",
+    "solver": "saga",
+    "tol": 0.001
+}
